@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A responsive Malaysian Honda hire purchase and insurance estimate calculator."
+    />
+    <title>Honda Loan Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="Honda Finance Desk home">
+        <span class="brand-mark" aria-hidden="true">H</span>
+        <span>
+          <strong>HONDA</strong>
+          <small>Finance Desk</small>
+        </span>
+      </a>
+      <span class="header-label">Malaysia hire purchase estimator</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <span class="eyebrow">SALES ADVISOR TOOL</span>
+          <h1 id="hero-title">A clearer drive starts with the right numbers.</h1>
+          <p>
+            Build a customer-ready Honda loan estimate with insurance, rebate,
+            deposit, and flat-rate financing in seconds.
+          </p>
+          <a class="hero-link" href="#calculator">
+            Start calculating
+            <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="calculator-section" id="calculator">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow eyebrow-dark">LOAN ESTIMATE</span>
+            <h2>Configure the quotation</h2>
+          </div>
+          <button class="text-button" id="reset-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            Reset calculator
+          </button>
+        </div>
+
+        <div class="calculator-layout">
+          <form class="form-panel" id="loan-form" novalidate>
+            <div class="form-section">
+              <div class="form-section-heading">
+                <span class="section-number">01</span>
+                <div>
+                  <h3>Vehicle details</h3>
+                  <p>Select a preset, then adjust any figure as needed.</p>
+                </div>
+              </div>
+
+              <div class="field-grid">
+                <label class="field">
+                  <span>Model</span>
+                  <span class="select-wrap">
+                    <select id="model" name="model"></select>
+                  </span>
+                </label>
+
+                <label class="field">
+                  <span>Variant</span>
+                  <span class="select-wrap">
+                    <select id="variant" name="variant"></select>
+                  </span>
+                </label>
+
+                <label class="field field-wide">
+                  <span>Color</span>
+                  <span class="color-select">
+                    <span class="color-swatch" id="color-swatch" aria-hidden="true"></span>
+                    <span class="select-wrap">
+                      <select id="color" name="color"></select>
+                    </span>
+                  </span>
+                  <small>Official colours for the selected model and variant</small>
+                </label>
+
+                <label class="field">
+                  <span>Car body price</span>
+                  <span class="input-prefix">
+                    <span>RM</span>
+                    <input
+                      id="body-price"
+                      name="bodyPrice"
+                      type="number"
+                      min="0"
+                      step="100"
+                      inputmode="decimal"
+                    />
+                  </span>
+                  <small>Indicative preset, fully editable</small>
+                </label>
+
+                <label class="field">
+                  <span>Color surcharge</span>
+                  <span class="input-prefix">
+                    <span>RM</span>
+                    <input
+                      id="color-surcharge"
+                      name="colorSurcharge"
+                      type="number"
+                      min="0"
+                      step="100"
+                      inputmode="decimal"
+                    />
+                  </span>
+                </label>
+
+                <label class="field field-wide">
+                  <span>Rebate</span>
+                  <span class="input-prefix">
+                    <span>RM</span>
+                    <input
+                      id="rebate"
+                      name="rebate"
+                      type="number"
+                      min="0"
+                      step="100"
+                      value="0"
+                      inputmode="decimal"
+                    />
+                  </span>
+                  <small class="validation-message" id="rebate-message"></small>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-divider"></div>
+
+            <div class="form-section">
+              <div class="form-section-heading">
+                <span class="section-number">02</span>
+                <div>
+                  <h3>Financing &amp; insurance</h3>
+                  <p>Set the flat interest and estimated insurance profile.</p>
+                </div>
+              </div>
+
+              <div class="field-grid">
+                <label class="field">
+                  <span>Interest rate</span>
+                  <span class="input-suffix">
+                    <input
+                      id="interest-rate"
+                      name="interestRate"
+                      type="number"
+                      min="0"
+                      max="20"
+                      step="0.01"
+                      value="2.65"
+                      inputmode="decimal"
+                    />
+                    <span>% p.a.</span>
+                  </span>
+                </label>
+
+                <label class="field">
+                  <span>Insurance NCD</span>
+                  <span class="select-wrap">
+                    <select id="ncd" name="ncd">
+                      <option value="0">0%</option>
+                      <option value="25">25%</option>
+                      <option value="30">30%</option>
+                      <option value="38.33">38.33%</option>
+                      <option value="45">45%</option>
+                      <option value="55" selected>55%</option>
+                    </select>
+                  </span>
+                </label>
+
+                <label class="field field-wide">
+                  <span>Insurance estimate rate</span>
+                  <span class="input-suffix">
+                    <input
+                      id="insurance-rate"
+                      name="insuranceRate"
+                      type="number"
+                      min="0"
+                      max="20"
+                      step="0.01"
+                      value="3"
+                      inputmode="decimal"
+                    />
+                    <span>%</span>
+                  </span>
+                  <small>Applied to the vehicle price after rebate</small>
+                </label>
+
+                <label class="field">
+                  <span>Deposit option</span>
+                  <span class="select-wrap">
+                    <select id="deposit-option" name="depositOption">
+                      <option value="10" selected>10% deposit</option>
+                      <option value="custom">Custom deposit</option>
+                    </select>
+                  </span>
+                </label>
+
+                <label class="field is-hidden" id="custom-deposit-field">
+                  <span>Custom deposit</span>
+                  <span class="input-prefix">
+                    <span>RM</span>
+                    <input
+                      id="custom-deposit"
+                      name="customDeposit"
+                      type="number"
+                      min="0"
+                      step="100"
+                      value="0"
+                      inputmode="decimal"
+                    />
+                  </span>
+                  <small class="validation-message" id="deposit-message"></small>
+                </label>
+              </div>
+            </div>
+          </form>
+
+          <aside class="results-panel" aria-live="polite">
+            <div class="results-header">
+              <div>
+                <span class="eyebrow">ESTIMATED SUMMARY</span>
+                <h2 id="result-vehicle">Honda City · V</h2>
+                <p id="result-color">Platinum White Pearl</p>
+              </div>
+              <span class="live-indicator">
+                <span aria-hidden="true"></span>
+                Live
+              </span>
+            </div>
+
+            <div class="primary-result">
+              <span>Monthly from</span>
+              <strong id="monthly-hero">RM 0.00</strong>
+              <small id="monthly-hero-note">10% deposit · 9 years</small>
+            </div>
+
+            <div class="result-grid">
+              <article class="result-card">
+                <span>Price after rebate</span>
+                <strong id="price-after-rebate">RM 0.00</strong>
+              </article>
+              <article class="result-card">
+                <span>Estimated insurance</span>
+                <strong id="estimated-insurance">RM 0.00</strong>
+              </article>
+              <article class="result-card result-card-wide">
+                <span>OTR price with insurance</span>
+                <strong id="otr-price">RM 0.00</strong>
+              </article>
+              <article class="result-card">
+                <span>Full loan amount</span>
+                <strong id="full-loan">RM 0.00</strong>
+              </article>
+              <article class="result-card">
+                <span>Monthly full loan</span>
+                <strong id="monthly-full-9">RM 0.00</strong>
+                <small>9 years · 108 months</small>
+              </article>
+              <article class="result-card">
+                <span id="deposit-result-label">Deposit 10%</span>
+                <strong id="deposit-amount">RM 0.00</strong>
+              </article>
+              <article class="result-card">
+                <span id="monthly-deposit-7-label">10% deposit, loan 7 years</span>
+                <strong id="monthly-deposit-7">RM 0.00</strong>
+                <small>7 years · 84 months</small>
+              </article>
+              <article class="result-card result-card-accent result-card-wide">
+                <span id="monthly-deposit-9-label">10% deposit, loan 9 years</span>
+                <strong id="monthly-deposit-9">RM 0.00</strong>
+                <small>9 years · 108 months</small>
+              </article>
+            </div>
+
+            <button class="copy-button" id="copy-button" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="8" y="8" width="12" height="12" rx="2" />
+                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+              </svg>
+              <span>Copy WhatsApp-ready result</span>
+            </button>
+            <p class="copy-status" id="copy-status" role="status"></p>
+          </aside>
+        </div>
+
+        <p class="disclaimer">
+          This calculator provides an indicative estimate only. Final vehicle
+          price, insurance premium, interest rate, and financing approval are
+          subject to confirmation by the sales advisor, insurer, and bank.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <span>Honda Finance Desk</span>
+      <span>Built for faster, clearer customer conversations.</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
