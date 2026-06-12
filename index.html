@@ -29,21 +29,6 @@
     </header>
 
     <main>
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-content">
-          <span class="eyebrow">SALES ADVISOR TOOL</span>
-          <h1 id="hero-title">A clearer drive starts with the right numbers.</h1>
-          <p>
-            Build a customer-ready Honda loan estimate with insurance, rebate,
-            deposit, and flat-rate financing in seconds.
-          </p>
-          <a class="hero-link" href="#calculator">
-            Start calculating
-            <span aria-hidden="true">↓</span>
-          </a>
-        </div>
-      </section>
-
       <section class="calculator-section" id="calculator">
         <div class="section-heading">
           <div>
@@ -168,10 +153,20 @@
                       min="0"
                       max="20"
                       step="0.01"
-                      value="2.4"
+                      value="2.3"
                       inputmode="decimal"
                     />
                     <span>% p.a.</span>
+                  </span>
+                </label>
+
+                <label class="field">
+                  <span>Insurance option</span>
+                  <span class="select-wrap">
+                    <select id="insurance-option" name="insuranceOption">
+                      <option value="include" selected>With insurance</option>
+                      <option value="exclude">Exclude insurance</option>
+                    </select>
                   </span>
                 </label>
 
@@ -244,11 +239,11 @@
                 <strong id="price-after-rebate">RM 0.00</strong>
               </article>
               <article class="result-card">
-                <span>Estimated insurance</span>
+                <span id="estimated-insurance-label">Estimated insurance</span>
                 <strong id="estimated-insurance">RM 0.00</strong>
               </article>
               <article class="result-card result-card-wide">
-                <span>OTR price with insurance</span>
+                <span id="otr-price-label">OTR price with insurance</span>
                 <strong id="otr-price">RM 0.00</strong>
               </article>
               <article class="result-card">

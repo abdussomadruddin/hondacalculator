@@ -167,6 +167,7 @@ const bodyPriceInput = document.querySelector("#body-price");
 const colorSurchargeInput = document.querySelector("#color-surcharge");
 const rebateInput = document.querySelector("#rebate");
 const interestRateInput = document.querySelector("#interest-rate");
+const insuranceOptionSelect = document.querySelector("#insurance-option");
 const ncdSelect = document.querySelector("#ncd");
 const depositOptionSelect = document.querySelector("#deposit-option");
 const customDepositField = document.querySelector("#custom-deposit-field");
@@ -282,6 +283,12 @@ function syncDepositOption() {
   calculate();
 }
 
+function syncInsuranceOption() {
+  const includesInsurance = insuranceOptionSelect.value === "include";
+  ncdSelect.disabled = !includesInsurance;
+  calculate();
+}
+
 function validateDeposit(otrPrice, requestedDeposit) {
   const hasError =
     depositOptionSelect.value === "custom" && requestedDeposit > otrPrice;
@@ -304,7 +311,8 @@ function calculate() {
     Math.max(0, getNumber(ncdSelect)),
   );
   const ncd = ncdPercentage / 100;
-  const insuranceRate = 0.03;
+  const includesInsurance = insuranceOptionSelect.value === "include";
+  const insuranceRate = includesInsurance ? 0.03 : 0;
 
   const priceAfterRebate = Math.max(
     0,
@@ -337,6 +345,7 @@ function calculate() {
     rebate,
     interestRate: interestRate * 100,
     ncd: ncdPercentage,
+    includesInsurance,
     insuranceRate: insuranceRate * 100,
     priceAfterRebate,
     estimatedInsurance,
@@ -368,6 +377,10 @@ function calculate() {
   document.querySelector("#result-vehicle").textContent =
     `Honda ${modelSelect.value} · ${variantSelect.value}`;
   document.querySelector("#result-color").textContent = colorSelect.value;
+  document.querySelector("#estimated-insurance-label").textContent =
+    includesInsurance ? "Estimated insurance" : "Insurance excluded";
+  document.querySelector("#otr-price-label").textContent =
+    includesInsurance ? "OTR price with insurance" : "Price excluding insurance";
   document.querySelector("#deposit-result-label").textContent = depositLabel;
   document.querySelector("#monthly-deposit-9-label").textContent =
     `${depositLabel}, loan 9 years`;
@@ -394,8 +407,12 @@ function buildWhatsAppMessage() {
     `Color surcharge: ${formatRM(result.colorSurcharge)}`,
     `Rebate: ${formatRM(result.rebate)}`,
     `Price after rebate: ${formatRM(result.priceAfterRebate)}`,
-    `Estimated insurance (${formatPercentage(result.ncd)}% NCD): ${formatRM(result.estimatedInsurance)}`,
-    `OTR with insurance: *${formatRM(result.otrPrice)}*`,
+    result.includesInsurance
+      ? `Estimated insurance (${formatPercentage(result.ncd)}% NCD): ${formatRM(result.estimatedInsurance)}`
+      : "Insurance: Excluded",
+    result.includesInsurance
+      ? `OTR with insurance: *${formatRM(result.otrPrice)}*`
+      : `Price excluding insurance: *${formatRM(result.otrPrice)}*`,
     "",
     `Full loan amount: ${formatRM(result.fullLoan)}`,
     `Full loan, 9 years: *${formatRM(result.monthlyFull9)}/month*`,
@@ -439,10 +456,12 @@ function resetCalculator() {
   colorSelect.value = "Platinum White Pearl";
   syncColor();
   rebateInput.value = 0;
-  interestRateInput.value = 2.4;
+  interestRateInput.value = 2.3;
+  insuranceOptionSelect.value = "include";
   ncdSelect.value = 0;
   depositOptionSelect.value = "10";
   customDepositInput.value = 0;
+  syncInsuranceOption();
   syncDepositOption();
   calculate();
 }
@@ -450,6 +469,7 @@ function resetCalculator() {
 modelSelect.addEventListener("change", populateVariants);
 variantSelect.addEventListener("change", syncVariant);
 colorSelect.addEventListener("change", syncColor);
+insuranceOptionSelect.addEventListener("change", syncInsuranceOption);
 depositOptionSelect.addEventListener("change", syncDepositOption);
 form.addEventListener("input", calculate);
 form.addEventListener("change", calculate);
@@ -457,5 +477,6 @@ copyButton.addEventListener("click", copyResult);
 resetButton.addEventListener("click", resetCalculator);
 
 populateModels();
+syncInsuranceOption();
 syncDepositOption();
 calculate();
