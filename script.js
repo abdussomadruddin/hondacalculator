@@ -168,7 +168,6 @@ const colorSurchargeInput = document.querySelector("#color-surcharge");
 const rebateInput = document.querySelector("#rebate");
 const interestRateInput = document.querySelector("#interest-rate");
 const ncdSelect = document.querySelector("#ncd");
-const insuranceRateInput = document.querySelector("#insurance-rate");
 const depositOptionSelect = document.querySelector("#deposit-option");
 const customDepositField = document.querySelector("#custom-deposit-field");
 const customDepositInput = document.querySelector("#custom-deposit");
@@ -305,8 +304,7 @@ function calculate() {
     Math.max(0, getNumber(ncdSelect)),
   );
   const ncd = ncdPercentage / 100;
-  const insuranceRate =
-    Math.min(20, Math.max(0, getNumber(insuranceRateInput))) / 100;
+  const insuranceRate = 0.03;
 
   const priceAfterRebate = Math.max(
     0,
@@ -441,9 +439,8 @@ function resetCalculator() {
   colorSelect.value = "Platinum White Pearl";
   syncColor();
   rebateInput.value = 0;
-  interestRateInput.value = 2.65;
-  ncdSelect.value = 55;
-  insuranceRateInput.value = 3;
+  interestRateInput.value = 2.4;
+  ncdSelect.value = 0;
   depositOptionSelect.value = "10";
   customDepositInput.value = 0;
   syncDepositOption();
