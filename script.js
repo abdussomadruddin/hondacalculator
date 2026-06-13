@@ -170,6 +170,7 @@ const interestRateInput = document.querySelector("#interest-rate");
 const insuranceOptionSelect = document.querySelector("#insurance-option");
 const ncdSelect = document.querySelector("#ncd");
 const depositOptionSelect = document.querySelector("#deposit-option");
+const loanPeriodSelect = document.querySelector("#loan-period");
 const customDepositField = document.querySelector("#custom-deposit-field");
 const customDepositInput = document.querySelector("#custom-deposit");
 const depositMessage = document.querySelector("#deposit-message");
@@ -183,9 +184,9 @@ const outputElements = {
   estimatedInsurance: document.querySelector("#estimated-insurance"),
   otrPrice: document.querySelector("#otr-price"),
   fullLoan: document.querySelector("#full-loan"),
-  monthlyFull9: document.querySelector("#monthly-full-9"),
+  monthlyFullSelected: document.querySelector("#monthly-full-selected"),
   depositAmount: document.querySelector("#deposit-amount"),
-  monthlyDeposit9: document.querySelector("#monthly-deposit-9"),
+  monthlySelected: document.querySelector("#monthly-selected"),
   monthlyDeposit7: document.querySelector("#monthly-deposit-7"),
   monthlyHero: document.querySelector("#monthly-hero"),
 };
@@ -313,6 +314,11 @@ function calculate() {
   const ncd = ncdPercentage / 100;
   const includesInsurance = insuranceOptionSelect.value === "include";
   const insuranceRate = includesInsurance ? 0.03 : 0;
+  const loanYears = Math.min(
+    9,
+    Math.max(1, Math.round(getNumber(loanPeriodSelect))),
+  );
+  const loanMonths = loanYears * 12;
 
   const priceAfterRebate = Math.max(
     0,
@@ -322,17 +328,32 @@ function calculate() {
   const estimatedInsurance = grossInsurance * (1 - ncd);
   const otrPrice = priceAfterRebate + estimatedInsurance;
   const fullLoan = otrPrice;
-  const monthlyFull9 =
-    (fullLoan + fullLoan * interestRate * 9) / 108;
+  const monthlyFullSelected =
+    (fullLoan + fullLoan * interestRate * loanYears) / loanMonths;
+  const isFullLoan = depositOptionSelect.value === "full";
   const isCustomDeposit = depositOptionSelect.value === "custom";
-  const requestedDeposit = isCustomDeposit
-    ? Math.max(0, getNumber(customDepositInput))
-    : otrPrice * 0.1;
+  const requestedDeposit = isFullLoan
+    ? 0
+    : isCustomDeposit
+      ? Math.max(0, getNumber(customDepositInput))
+      : otrPrice * 0.1;
   const depositAmount = Math.min(otrPrice, requestedDeposit);
-  const depositLabel = isCustomDeposit ? "Custom deposit" : "10% deposit";
+  const depositLabel = isFullLoan
+    ? "Full loan"
+    : isCustomDeposit
+      ? "Custom deposit"
+      : "10% deposit";
+  const depositResultLabel = isFullLoan ? "Deposit amount" : depositLabel;
+  const selectedLoanLabel = isFullLoan
+    ? `Full loan, ${loanYears} ${loanYears === 1 ? "year" : "years"}`
+    : `${depositLabel}, loan ${loanYears} ${loanYears === 1 ? "year" : "years"}`;
+  const sevenYearLoanLabel = isFullLoan
+    ? "Full loan, 7 years"
+    : `${depositLabel}, loan 7 years`;
   const loanAfterDeposit = otrPrice - depositAmount;
-  const monthlyDeposit9 =
-    (loanAfterDeposit + loanAfterDeposit * interestRate * 9) / 108;
+  const monthlySelected =
+    (loanAfterDeposit + loanAfterDeposit * interestRate * loanYears) /
+    loanMonths;
   const monthlyDeposit7 =
     (loanAfterDeposit + loanAfterDeposit * interestRate * 7) / 84;
 
@@ -347,16 +368,20 @@ function calculate() {
     ncd: ncdPercentage,
     includesInsurance,
     insuranceRate: insuranceRate * 100,
+    loanYears,
+    loanMonths,
     priceAfterRebate,
     estimatedInsurance,
     otrPrice,
     fullLoan,
-    monthlyFull9,
+    monthlyFullSelected,
     depositAmount,
     depositLabel,
+    selectedLoanLabel,
+    sevenYearLoanLabel,
     requestedDeposit,
     loanAfterDeposit,
-    monthlyDeposit9,
+    monthlySelected,
     monthlyDeposit7,
   };
 
@@ -365,11 +390,11 @@ function calculate() {
     estimatedInsurance,
     otrPrice,
     fullLoan,
-    monthlyFull9,
+    monthlyFullSelected,
     depositAmount,
-    monthlyDeposit9,
+    monthlySelected,
     monthlyDeposit7,
-    monthlyHero: monthlyDeposit9,
+    monthlyHero: monthlySelected,
   }).forEach(([key, value]) => {
     outputElements[key].textContent = formatRM(value);
   });
@@ -381,13 +406,18 @@ function calculate() {
     includesInsurance ? "Estimated insurance" : "Insurance excluded";
   document.querySelector("#otr-price-label").textContent =
     includesInsurance ? "OTR price with insurance" : "Price excluding insurance";
-  document.querySelector("#deposit-result-label").textContent = depositLabel;
-  document.querySelector("#monthly-deposit-9-label").textContent =
-    `${depositLabel}, loan 9 years`;
+  document.querySelector("#deposit-result-label").textContent =
+    depositResultLabel;
+  document.querySelector("#monthly-selected-label").textContent =
+    selectedLoanLabel;
+  document.querySelector("#monthly-selected-note").textContent =
+    `${loanYears} ${loanYears === 1 ? "year" : "years"} · ${loanMonths} months`;
+  document.querySelector("#monthly-full-selected-note").textContent =
+    `${loanYears} ${loanYears === 1 ? "year" : "years"} · ${loanMonths} months`;
   document.querySelector("#monthly-deposit-7-label").textContent =
-    `${depositLabel}, loan 7 years`;
+    sevenYearLoanLabel;
   document.querySelector("#monthly-hero-note").textContent =
-    `${depositLabel} · 9 years`;
+    `${depositLabel} · ${loanYears} ${loanYears === 1 ? "year" : "years"}`;
 
   validateRebate(bodyPrice, colorSurcharge, rebate);
   validateDeposit(otrPrice, requestedDeposit);
@@ -415,12 +445,12 @@ function buildWhatsAppMessage() {
       : `Price excluding insurance: *${formatRM(result.otrPrice)}*`,
     "",
     `Full loan amount: ${formatRM(result.fullLoan)}`,
-    `Full loan, 9 years: *${formatRM(result.monthlyFull9)}/month*`,
+    `Full loan, ${result.loanYears} ${result.loanYears === 1 ? "year" : "years"}: *${formatRM(result.monthlyFullSelected)}/month*`,
     "",
-    `${result.depositLabel}: ${formatRM(result.depositAmount)}`,
+    `Deposit amount: ${formatRM(result.depositAmount)}`,
     `Loan after deposit: ${formatRM(result.loanAfterDeposit)}`,
-    `${result.depositLabel}, loan 7 years: *${formatRM(result.monthlyDeposit7)}/month*`,
-    `${result.depositLabel}, loan 9 years: *${formatRM(result.monthlyDeposit9)}/month*`,
+    `${result.sevenYearLoanLabel}: *${formatRM(result.monthlyDeposit7)}/month*`,
+    `${result.selectedLoanLabel}: *${formatRM(result.monthlySelected)}/month*`,
   ].join("\n");
 }
 
@@ -456,10 +486,11 @@ function resetCalculator() {
   colorSelect.value = "Platinum White Pearl";
   syncColor();
   rebateInput.value = 0;
-  interestRateInput.value = 2.3;
+  interestRateInput.value = 2.25;
   insuranceOptionSelect.value = "include";
   ncdSelect.value = 0;
-  depositOptionSelect.value = "10";
+  depositOptionSelect.value = "full";
+  loanPeriodSelect.value = "9";
   customDepositInput.value = 0;
   syncInsuranceOption();
   syncDepositOption();

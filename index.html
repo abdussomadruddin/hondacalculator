@@ -153,7 +153,7 @@
                       min="0"
                       max="20"
                       step="0.01"
-                      value="2.3"
+                      value="2.25"
                       inputmode="decimal"
                     />
                     <span>% p.a.</span>
@@ -188,14 +188,32 @@
                   <span>Deposit option</span>
                   <span class="select-wrap">
                     <select id="deposit-option" name="depositOption">
-                      <option value="10" selected>10% deposit</option>
-                      <option value="custom">Custom deposit</option>
+                      <option value="full" selected>Full loan (No Deposit)</option>
+                      <option value="10">10% Deposit</option>
+                      <option value="custom">Custom Deposit</option>
+                    </select>
+                  </span>
+                </label>
+
+                <label class="field">
+                  <span>Loan period</span>
+                  <span class="select-wrap">
+                    <select id="loan-period" name="loanPeriod">
+                      <option value="1">1 year</option>
+                      <option value="2">2 years</option>
+                      <option value="3">3 years</option>
+                      <option value="4">4 years</option>
+                      <option value="5">5 years</option>
+                      <option value="6">6 years</option>
+                      <option value="7">7 years</option>
+                      <option value="8">8 years</option>
+                      <option value="9" selected>9 years</option>
                     </select>
                   </span>
                 </label>
 
                 <label class="field is-hidden" id="custom-deposit-field">
-                  <span>Custom deposit</span>
+                  <span>Custom Deposit</span>
                   <span class="input-prefix">
                     <span>RM</span>
                     <input
@@ -230,7 +248,7 @@
             <div class="primary-result">
               <span>Monthly from</span>
               <strong id="monthly-hero">RM 0.00</strong>
-              <small id="monthly-hero-note">10% deposit · 9 years</small>
+              <small id="monthly-hero-note">Full loan · 9 years</small>
             </div>
 
             <div class="result-grid">
@@ -252,22 +270,22 @@
               </article>
               <article class="result-card">
                 <span>Monthly full loan</span>
-                <strong id="monthly-full-9">RM 0.00</strong>
-                <small>9 years · 108 months</small>
+                <strong id="monthly-full-selected">RM 0.00</strong>
+                <small id="monthly-full-selected-note">9 years · 108 months</small>
               </article>
               <article class="result-card">
-                <span id="deposit-result-label">Deposit 10%</span>
+                <span id="deposit-result-label">Deposit amount</span>
                 <strong id="deposit-amount">RM 0.00</strong>
               </article>
               <article class="result-card">
-                <span id="monthly-deposit-7-label">10% deposit, loan 7 years</span>
+                <span id="monthly-deposit-7-label">Full loan, 7 years</span>
                 <strong id="monthly-deposit-7">RM 0.00</strong>
                 <small>7 years · 84 months</small>
               </article>
               <article class="result-card result-card-accent result-card-wide">
-                <span id="monthly-deposit-9-label">10% deposit, loan 9 years</span>
-                <strong id="monthly-deposit-9">RM 0.00</strong>
-                <small>9 years · 108 months</small>
+                <span id="monthly-selected-label">Full loan, selected loan period</span>
+                <strong id="monthly-selected">RM 0.00</strong>
+                <small id="monthly-selected-note">9 years · 108 months</small>
               </article>
             </div>
 
