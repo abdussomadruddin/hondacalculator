@@ -444,9 +444,6 @@ function buildWhatsAppMessage() {
       ? `OTR with insurance: *${formatRM(result.otrPrice)}*`
       : `Price excluding insurance: *${formatRM(result.otrPrice)}*`,
     "",
-    `Full loan amount: ${formatRM(result.fullLoan)}`,
-    `Full loan, ${result.loanYears} ${result.loanYears === 1 ? "year" : "years"}: *${formatRM(result.monthlyFullSelected)}/month*`,
-    "",
     `Deposit amount: ${formatRM(result.depositAmount)}`,
     `Loan after deposit: ${formatRM(result.loanAfterDeposit)}`,
     `${result.sevenYearLoanLabel}: *${formatRM(result.monthlyDeposit7)}/month*`,
