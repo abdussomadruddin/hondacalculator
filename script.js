@@ -436,7 +436,6 @@ function buildWhatsAppMessage() {
     `Deposit amount: ${formatRM(result.depositAmount)}`,
     `Loan after deposit: ${formatRM(result.loanAfterDeposit)}`,
     `${result.sevenYearLoanLabel}: *${formatRM(result.monthlyDeposit7)}/month*`,
-    `${result.selectedLoanLabel}: *${formatRM(result.monthlySelected)}/month*`,
   ].join("\n");
 }
 
