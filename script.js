@@ -183,8 +183,6 @@ const outputElements = {
   priceAfterRebate: document.querySelector("#price-after-rebate"),
   estimatedInsurance: document.querySelector("#estimated-insurance"),
   otrPrice: document.querySelector("#otr-price"),
-  fullLoan: document.querySelector("#full-loan"),
-  monthlyFullSelected: document.querySelector("#monthly-full-selected"),
   depositAmount: document.querySelector("#deposit-amount"),
   monthlySelected: document.querySelector("#monthly-selected"),
   monthlyDeposit7: document.querySelector("#monthly-deposit-7"),
@@ -327,9 +325,6 @@ function calculate() {
   const grossInsurance = priceAfterRebate * insuranceRate;
   const estimatedInsurance = grossInsurance * (1 - ncd);
   const otrPrice = priceAfterRebate + estimatedInsurance;
-  const fullLoan = otrPrice;
-  const monthlyFullSelected =
-    (fullLoan + fullLoan * interestRate * loanYears) / loanMonths;
   const isFullLoan = depositOptionSelect.value === "full";
   const isCustomDeposit = depositOptionSelect.value === "custom";
   const requestedDeposit = isFullLoan
@@ -373,8 +368,6 @@ function calculate() {
     priceAfterRebate,
     estimatedInsurance,
     otrPrice,
-    fullLoan,
-    monthlyFullSelected,
     depositAmount,
     depositLabel,
     selectedLoanLabel,
@@ -389,8 +382,6 @@ function calculate() {
     priceAfterRebate,
     estimatedInsurance,
     otrPrice,
-    fullLoan,
-    monthlyFullSelected,
     depositAmount,
     monthlySelected,
     monthlyDeposit7,
@@ -411,8 +402,6 @@ function calculate() {
   document.querySelector("#monthly-selected-label").textContent =
     selectedLoanLabel;
   document.querySelector("#monthly-selected-note").textContent =
-    `${loanYears} ${loanYears === 1 ? "year" : "years"} · ${loanMonths} months`;
-  document.querySelector("#monthly-full-selected-note").textContent =
     `${loanYears} ${loanYears === 1 ? "year" : "years"} · ${loanMonths} months`;
   document.querySelector("#monthly-deposit-7-label").textContent =
     sevenYearLoanLabel;
