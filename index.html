@@ -1,177 +1,315 @@
 <!doctype html>
-<html lang="ms">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Proton Loan Calculator</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A responsive Malaysian Honda hire purchase and insurance estimate calculator."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Honda Loan" />
+    <title>Honda Loan Calculator</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">PROTON</p>
-          <h1>Loan Calculator</h1>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="Honda Finance Desk home">
+        <span class="brand-mark" aria-hidden="true">H</span>
+        <span>
+          <strong>HONDA</strong>
+          <small>Finance Desk</small>
+        </span>
+      </a>
+      <span class="header-label">Malaysia hire purchase estimator</span>
+    </header>
+
+    <main>
+      <section class="calculator-section" id="calculator">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow eyebrow-dark">LOAN ESTIMATE</span>
+            <h2>Configure the quotation</h2>
+          </div>
+          <button class="text-button" id="reset-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            Reset calculator
+          </button>
         </div>
-        <div class="copy-state" id="copyState" aria-live="polite">Ready</div>
-      </header>
 
-      <section class="workspace" aria-label="Proton loan calculator">
-        <form class="panel input-panel" id="loanForm">
-          <fieldset>
-            <legend>Car Details</legend>
-
-            <div class="form-grid">
-              <label>
-                <span>Model</span>
-                <select id="modelSelect" name="model"></select>
-              </label>
-
-              <label>
-                <span>Variant</span>
-                <select id="variantSelect" name="variant"></select>
-              </label>
-
-              <label>
-                <span>Car Body Price</span>
-                <div class="money-field">
-                  <span>RM</span>
-                  <input id="bodyPrice" name="bodyPrice" type="number" min="0" step="100" inputmode="decimal" />
+        <div class="calculator-layout">
+          <form class="form-panel" id="loan-form" novalidate>
+            <div class="form-section">
+              <div class="form-section-heading">
+                <span class="section-number">01</span>
+                <div>
+                  <h3>Vehicle details</h3>
+                  <p>Select a preset, then adjust any figure as needed.</p>
                 </div>
-              </label>
+              </div>
 
-              <label>
-                <span>Rebate</span>
-                <div class="money-field">
-                  <span>RM</span>
-                  <input id="rebate" name="rebate" type="number" min="0" step="100" value="0" inputmode="decimal" />
+              <div class="field-grid">
+                <label class="field">
+                  <span>Model</span>
+                  <span class="select-wrap">
+                    <select id="model" name="model"></select>
+                  </span>
+                </label>
+
+                <label class="field">
+                  <span>Variant</span>
+                  <span class="select-wrap">
+                    <select id="variant" name="variant"></select>
+                  </span>
+                </label>
+
+                <label class="field field-wide">
+                  <span>Color</span>
+                  <span class="color-select">
+                    <span class="color-swatch" id="color-swatch" aria-hidden="true"></span>
+                    <span class="select-wrap">
+                      <select id="color" name="color"></select>
+                    </span>
+                  </span>
+                  <small>Official colours for the selected model and variant</small>
+                </label>
+
+                <label class="field">
+                  <span>Car body price</span>
+                  <span class="input-prefix">
+                    <span>RM</span>
+                    <input
+                      id="body-price"
+                      name="bodyPrice"
+                      type="number"
+                      min="0"
+                      step="100"
+                      inputmode="decimal"
+                    />
+                  </span>
+                  <small>Indicative preset, fully editable</small>
+                </label>
+
+                <label class="field">
+                  <span>Color surcharge</span>
+                  <span class="input-prefix">
+                    <span>RM</span>
+                    <input
+                      id="color-surcharge"
+                      name="colorSurcharge"
+                      type="number"
+                      min="0"
+                      step="100"
+                      inputmode="decimal"
+                    />
+                  </span>
+                </label>
+
+                <label class="field field-wide">
+                  <span>Rebate</span>
+                  <span class="input-prefix">
+                    <span>RM</span>
+                    <input
+                      id="rebate"
+                      name="rebate"
+                      type="number"
+                      min="0"
+                      step="100"
+                      value="0"
+                      inputmode="decimal"
+                    />
+                  </span>
+                  <small class="validation-message" id="rebate-message"></small>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-divider"></div>
+
+            <div class="form-section">
+              <div class="form-section-heading">
+                <span class="section-number">02</span>
+                <div>
+                  <h3>Financing &amp; insurance</h3>
+                  <p>Set the flat interest and estimated insurance profile.</p>
                 </div>
-              </label>
+              </div>
 
-              <label>
-                <span>Interest Rate</span>
-                <div class="rate-field">
-                  <input id="interestRate" name="interestRate" type="number" min="0" max="20" step="0.01" value="2.3" inputmode="decimal" />
-                  <span>%</span>
-                </div>
-              </label>
+              <div class="field-grid">
+                <label class="field">
+                  <span>Interest rate</span>
+                  <span class="input-suffix">
+                    <input
+                      id="interest-rate"
+                      name="interestRate"
+                      type="number"
+                      min="0"
+                      max="20"
+                      step="0.01"
+                      value="2.25"
+                      inputmode="decimal"
+                    />
+                    <span>% p.a.</span>
+                  </span>
+                </label>
+
+                <label class="field">
+                  <span>Insurance option</span>
+                  <span class="select-wrap">
+                    <select id="insurance-option" name="insuranceOption">
+                      <option value="include" selected>With insurance</option>
+                      <option value="exclude">Exclude insurance</option>
+                    </select>
+                  </span>
+                </label>
+
+                <label class="field">
+                  <span>Insurance NCD</span>
+                  <span class="select-wrap">
+                    <select id="ncd" name="ncd">
+                      <option value="0" selected>0%</option>
+                      <option value="25">25%</option>
+                      <option value="30">30%</option>
+                      <option value="38.33">38.33%</option>
+                      <option value="45">45%</option>
+                      <option value="55">55%</option>
+                    </select>
+                  </span>
+                </label>
+
+                <label class="field">
+                  <span>Deposit option</span>
+                  <span class="select-wrap">
+                    <select id="deposit-option" name="depositOption">
+                      <option value="full" selected>Full loan (No Deposit)</option>
+                      <option value="10">10% Deposit</option>
+                      <option value="custom">Custom Deposit</option>
+                    </select>
+                  </span>
+                </label>
+
+                <label class="field">
+                  <span>Loan period</span>
+                  <span class="select-wrap">
+                    <select id="loan-period" name="loanPeriod">
+                      <option value="1">1 year</option>
+                      <option value="2">2 years</option>
+                      <option value="3">3 years</option>
+                      <option value="4">4 years</option>
+                      <option value="5">5 years</option>
+                      <option value="6">6 years</option>
+                      <option value="7">7 years</option>
+                      <option value="8">8 years</option>
+                      <option value="9" selected>9 years</option>
+                    </select>
+                  </span>
+                </label>
+
+                <label class="field is-hidden" id="custom-deposit-field">
+                  <span>Custom Deposit</span>
+                  <span class="input-prefix">
+                    <span>RM</span>
+                    <input
+                      id="custom-deposit"
+                      name="customDeposit"
+                      type="number"
+                      min="0"
+                      step="100"
+                      value="0"
+                      inputmode="decimal"
+                    />
+                  </span>
+                  <small class="validation-message" id="deposit-message"></small>
+                </label>
+              </div>
             </div>
-          </fieldset>
+          </form>
 
-          <fieldset>
-            <legend>Insurance</legend>
-
-            <div class="segmented" role="radiogroup" aria-label="Insurance option">
-              <label>
-                <input type="radio" name="insuranceOption" value="with" checked />
-                <span>With insurance</span>
-              </label>
-              <label>
-                <input type="radio" name="insuranceOption" value="exclude" />
-                <span>Exclude insurance</span>
-              </label>
+          <aside class="results-panel" aria-live="polite">
+            <div class="results-header">
+              <div>
+                <span class="eyebrow">ESTIMATED SUMMARY</span>
+                <h2 id="result-vehicle">Honda City · V</h2>
+                <p id="result-color">Platinum White Pearl</p>
+              </div>
+              <span class="live-indicator">
+                <span aria-hidden="true"></span>
+                Live
+              </span>
             </div>
 
-            <div class="form-grid single">
-              <label>
-                <span>Insurance NCD</span>
-                <select id="ncd" name="ncd">
-                  <option value="0">0%</option>
-                  <option value="25">25%</option>
-                  <option value="30">30%</option>
-                  <option value="38.33">38.33%</option>
-                  <option value="45">45%</option>
-                  <option value="55">55%</option>
-                </select>
-              </label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>Deposit & Loan</legend>
-
-            <div class="segmented three" role="radiogroup" aria-label="Deposit option">
-              <label>
-                <input type="radio" name="depositOption" value="full" checked />
-                <span>Full loan</span>
-              </label>
-              <label>
-                <input type="radio" name="depositOption" value="ten" />
-                <span>10% deposit</span>
-              </label>
-              <label>
-                <input type="radio" name="depositOption" value="custom" />
-                <span>Custom</span>
-              </label>
+            <div class="primary-result">
+              <span>Monthly from</span>
+              <strong id="monthly-hero">RM 0.00</strong>
+              <small id="monthly-hero-note">Full loan · 9 years</small>
             </div>
 
-            <div class="form-grid">
-              <label id="customDepositWrap">
-                <span>Custom Deposit</span>
-                <div class="money-field">
-                  <span>RM</span>
-                  <input id="customDeposit" name="customDeposit" type="number" min="0" step="100" value="0" inputmode="decimal" />
-                </div>
-              </label>
+            <div class="result-grid">
+              <article class="result-card">
+                <span>Price after rebate</span>
+                <strong id="price-after-rebate">RM 0.00</strong>
+              </article>
+              <article class="result-card">
+                <span id="estimated-insurance-label">Estimated insurance</span>
+                <strong id="estimated-insurance">RM 0.00</strong>
+              </article>
+              <article class="result-card result-card-wide">
+                <span id="otr-price-label">OTR price with insurance</span>
+                <strong id="otr-price">RM 0.00</strong>
+              </article>
+              <article class="result-card">
+                <span id="deposit-result-label">Deposit amount</span>
+                <strong id="deposit-amount">RM 0.00</strong>
+              </article>
+              <article class="result-card">
+                <span id="monthly-deposit-7-label">Full loan, 7 years</span>
+                <strong id="monthly-deposit-7">RM 0.00</strong>
+                <small>7 years · 84 months</small>
+              </article>
+              <article class="result-card result-card-accent result-card-wide">
+                <span id="monthly-selected-label">Full loan, selected loan period</span>
+                <strong id="monthly-selected">RM 0.00</strong>
+                <small id="monthly-selected-note">9 years · 108 months</small>
+              </article>
+            </div>
 
-              <label>
-                <span>Loan Period</span>
-                <select id="loanPeriod" name="loanPeriod">
-                  <option value="1">1 year</option>
-                  <option value="2">2 years</option>
-                  <option value="3">3 years</option>
-                  <option value="4">4 years</option>
-                  <option value="5">5 years</option>
-                  <option value="6">6 years</option>
-                  <option value="7">7 years</option>
-                  <option value="8">8 years</option>
-                  <option value="9" selected>9 years</option>
-                </select>
-              </label>
-            </div>
-          </fieldset>
-        </form>
-
-        <aside class="panel output-panel">
-          <div class="summary-grid" aria-label="Loan summary">
-            <div>
-              <span>OTR</span>
-              <strong id="summaryOtr">RM 0.00</strong>
-            </div>
-            <div>
-              <span>Loan</span>
-              <strong id="summaryLoan">RM 0.00</strong>
-            </div>
-            <div>
-              <span>Deposit</span>
-              <strong id="summaryDeposit">RM 0.00</strong>
-            </div>
-            <div>
-              <span>7 Years</span>
-              <strong id="summarySeven">RM 0.00</strong>
-            </div>
-            <div>
-              <span id="summaryPeriodLabel">9 Years</span>
-              <strong id="summarySelected">RM 0.00</strong>
-            </div>
-          </div>
-
-          <label class="template-wrap">
-            <span>WhatsApp Template</span>
-            <textarea id="templateOutput" readonly spellcheck="false"></textarea>
-          </label>
-
-          <div class="actions">
-            <button class="primary-action" id="copyButton" type="button">
-              <span aria-hidden="true">Copy</span>
-              <strong>WhatsApp Template</strong>
+            <button class="copy-button" id="copy-button" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="8" y="8" width="12" height="12" rx="2" />
+                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+              </svg>
+              <span>Copy WhatsApp-ready result</span>
             </button>
-            <button class="secondary-action" id="resetButton" type="button">Reset</button>
-          </div>
-        </aside>
+            <p class="copy-status" id="copy-status" role="status"></p>
+          </aside>
+        </div>
+
+        <p class="disclaimer">
+          This calculator provides an indicative estimate only. Final vehicle
+          price, insurance premium, interest rate, and financing approval are
+          subject to confirmation by the sales advisor, insurer, and bank.
+        </p>
       </section>
     </main>
 
-    <script src="script.js"></script>
+    <footer>
+      <span>Honda Finance Desk</span>
+      <span>Built for faster, clearer customer conversations.</span>
+    </footer>
+
+    <script src="script.js?v=20260614-3"></script>
   </body>
 </html>
