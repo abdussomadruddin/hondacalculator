@@ -1,500 +1,348 @@
-const vehicles = {
-  "City": {
-    variants: {
-      "1.5L S": 84900,
-      "1.5L E": 89900,
-      "1.5L V": 94900,
-      "1.5L RS": 99900,
-      "1.5L e:HEV RS": 111900,
-    },
-  },
-  "City Hatchback": {
-    variants: {
-      "1.5L S": 85900,
-      "1.5L E": 90900,
-      "1.5L V": 95900,
-      "1.5L RS": 100900,
-      "1.5L e:HEV RS": 112900,
-    },
-  },
-  "WR-V": {
-    variants: {
-      "1.5L S": 89900,
-      "1.5L E": 95900,
-      "1.5L V": 99900,
-      "1.5L RS": 107900,
-    },
-  },
-  "Civic": {
-    variants: {
-      "1.5L E": 133900,
-      "1.5L V": 144900,
-      "1.5L RS": 149900,
-      "2.0L e:HEV RS": 167900,
-    },
-  },
-  "HR-V": {
-    variants: {
-      "1.5L S": 115900,
-      "1.5L Turbo E": 130900,
-      "1.5L Turbo V": 137900,
-      "1.5L e:HEV RS": 143900,
-    },
-  },
-  "CR-V": {
-    variants: {
-      "2.0L e:HEV E": 178200,
-      "1.5L Turbo V AWD": 181900,
-      "2.0L e:HEV RS": 195900,
-    },
-  },
+const PROTON_MODELS = {
+  "Proton S70": [
+    { name: "Executive", price: 68800 },
+    { name: "Premium", price: 79800 },
+    { name: "Flagship", price: 89800 },
+    { name: "Flagship X", price: 94900 },
+  ],
+  "Proton X50": [
+    { name: "Executive", price: 89800 },
+    { name: "Premium", price: 101800 },
+    { name: "Flagship", price: 113300 },
+  ],
+  "Proton X70": [
+    { name: "Standard", price: 99800 },
+    { name: "Executive", price: 110800 },
+    { name: "Premium", price: 123800 },
+  ],
+  "Proton X90": [
+    { name: "Standard", price: 99800 },
+    { name: "Executive", price: 113800 },
+    { name: "Premium", price: 123800 },
+    { name: "Flagship", price: 146800 },
+  ],
+  "Proton All New Saga": [
+    { name: "Standard", price: 38990 },
+    { name: "Executive", price: 43990 },
+    { name: "Premium", price: 48990 },
+  ],
+  "Proton Persona": [
+    { name: "Standard", price: 47800 },
+    { name: "Executive", price: 53300 },
+    { name: "Premium", price: 58300 },
+  ],
+  "Proton Iriz": [
+    { name: "Standard", price: 42800 },
+    { name: "Executive", price: 50300 },
+    { name: "Active", price: 57300 },
+  ],
 };
 
-const colors = {
-  "Platinum White Pearl": { swatch: "#f0eee6" },
-  "Ignite Red Metallic": { swatch: "#b40b20" },
-  "Phoenix Orange Pearl": { swatch: "#e8471b" },
-  "Stellar Diamond Pearl": { swatch: "#cbd5db" },
-  "Meteoroid Gray Metallic": { swatch: "#53555a" },
-  "Canyon River Blue Metallic": { swatch: "#334d64" },
-  "Crystal Black Pearl": { swatch: "#17181a" },
-  "Blazing Red Pearl": { swatch: "#b71420" },
+const DEFAULT_STATE = {
+  model: "Proton S70",
+  variant: "Flagship X",
+  interestRate: 2.3,
+  insuranceOption: "with",
+  ncd: 0,
+  depositOption: "full",
+  customDeposit: 0,
+  loanPeriod: 9,
 };
 
-const colorAvailability = {
-  "City": {
-    default: [
-      "Phoenix Orange Pearl",
-      "Ignite Red Metallic",
-      "Meteoroid Gray Metallic",
-      "Platinum White Pearl",
-      "Stellar Diamond Pearl",
-    ],
-    "1.5L e:HEV RS": [
-      "Phoenix Orange Pearl",
-      "Ignite Red Metallic",
-      "Meteoroid Gray Metallic",
-      "Platinum White Pearl",
-    ],
-  },
-  "City Hatchback": {
-    default: [
-      "Ignite Red Metallic",
-      "Platinum White Pearl",
-      "Stellar Diamond Pearl",
-      "Meteoroid Gray Metallic",
-      "Phoenix Orange Pearl",
-    ],
-    "1.5L e:HEV RS": [
-      "Ignite Red Metallic",
-      "Platinum White Pearl",
-      "Meteoroid Gray Metallic",
-      "Phoenix Orange Pearl",
-    ],
-  },
-  "WR-V": {
-    default: [
-      "Ignite Red Metallic",
-      "Platinum White Pearl",
-      "Stellar Diamond Pearl",
-      "Meteoroid Gray Metallic",
-      "Phoenix Orange Pearl",
-    ],
-  },
-  "Civic": {
-    default: [
-      "Canyon River Blue Metallic",
-      "Platinum White Pearl",
-      "Meteoroid Gray Metallic",
-      "Crystal Black Pearl",
-      "Ignite Red Metallic",
-    ],
-    "2.0L e:HEV RS": [
-      "Canyon River Blue Metallic",
-      "Platinum White Pearl",
-      "Meteoroid Gray Metallic",
-      "Ignite Red Metallic",
-    ],
-  },
-  "HR-V": {
-    default: [
-      "Platinum White Pearl",
-      "Stellar Diamond Pearl",
-      "Meteoroid Gray Metallic",
-      "Crystal Black Pearl",
-      "Phoenix Orange Pearl",
-    ],
-  },
-  "CR-V": {
-    default: [
-      "Canyon River Blue Metallic",
-      "Platinum White Pearl",
-      "Meteoroid Gray Metallic",
-      "Blazing Red Pearl",
-    ],
-  },
+const INSURANCE_RATE = 0.03;
+const BASE_COMPARISON_YEARS = 7;
+const MODEL_REBATES = {
+  "Proton All New Saga": 500,
+  "Proton Persona": 2000,
+  "Proton S70": 5000,
+  "Proton X70": 7000,
+  "Proton X90": 7000,
 };
 
-const colorSurcharges = {
-  "City": {
-    "Platinum White Pearl": 400,
-    "Phoenix Orange Pearl": 400,
-    "Ignite Red Metallic": 400,
-  },
-  "City Hatchback": {
-    "Platinum White Pearl": 400,
-    "Phoenix Orange Pearl": 400,
-    "Ignite Red Metallic": 400,
-  },
-  "WR-V": {
-    "Platinum White Pearl": 400,
-    "Phoenix Orange Pearl": 400,
-    "Ignite Red Metallic": 400,
-  },
-  "Civic": {
-    "Platinum White Pearl": 800,
-    "Ignite Red Metallic": 800,
-    "Canyon River Blue Metallic": 800,
-  },
-};
-
-const form = document.querySelector("#loan-form");
-const modelSelect = document.querySelector("#model");
-const variantSelect = document.querySelector("#variant");
-const colorSelect = document.querySelector("#color");
-const colorSwatch = document.querySelector("#color-swatch");
-const bodyPriceInput = document.querySelector("#body-price");
-const colorSurchargeInput = document.querySelector("#color-surcharge");
+const form = document.querySelector("#loanForm");
+const modelSelect = document.querySelector("#modelSelect");
+const variantSelect = document.querySelector("#variantSelect");
+const bodyPriceInput = document.querySelector("#bodyPrice");
 const rebateInput = document.querySelector("#rebate");
-const interestRateInput = document.querySelector("#interest-rate");
-const insuranceOptionSelect = document.querySelector("#insurance-option");
+const interestRateInput = document.querySelector("#interestRate");
 const ncdSelect = document.querySelector("#ncd");
-const depositOptionSelect = document.querySelector("#deposit-option");
-const loanPeriodSelect = document.querySelector("#loan-period");
-const customDepositField = document.querySelector("#custom-deposit-field");
-const customDepositInput = document.querySelector("#custom-deposit");
-const depositMessage = document.querySelector("#deposit-message");
-const copyButton = document.querySelector("#copy-button");
-const copyStatus = document.querySelector("#copy-status");
-const resetButton = document.querySelector("#reset-button");
-const rebateMessage = document.querySelector("#rebate-message");
+const customDepositInput = document.querySelector("#customDeposit");
+const customDepositWrap = document.querySelector("#customDepositWrap");
+const loanPeriodSelect = document.querySelector("#loanPeriod");
+const templateOutput = document.querySelector("#templateOutput");
+const copyButton = document.querySelector("#copyButton");
+const resetButton = document.querySelector("#resetButton");
+const copyState = document.querySelector("#copyState");
+const summaryOtr = document.querySelector("#summaryOtr");
+const summaryLoan = document.querySelector("#summaryLoan");
+const summaryDeposit = document.querySelector("#summaryDeposit");
+const summarySeven = document.querySelector("#summarySeven");
+const summarySelected = document.querySelector("#summarySelected");
+const summaryPeriodLabel = document.querySelector("#summaryPeriodLabel");
 
-const outputElements = {
-  priceAfterRebate: document.querySelector("#price-after-rebate"),
-  estimatedInsurance: document.querySelector("#estimated-insurance"),
-  otrPrice: document.querySelector("#otr-price"),
-  depositAmount: document.querySelector("#deposit-amount"),
-  monthlySelected: document.querySelector("#monthly-selected"),
-  monthlyDeposit7: document.querySelector("#monthly-deposit-7"),
-  monthlyHero: document.querySelector("#monthly-hero"),
-};
+let statusTimer = null;
 
-const currency = new Intl.NumberFormat("en-MY", {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
-
-let latestResult = {};
-
-function formatRM(value) {
-  return `RM ${currency.format(Number.isFinite(value) ? value : 0)}`;
+function money(value) {
+  return `RM ${Number(value || 0).toLocaleString("en-MY", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
 }
 
-function formatPercentage(value) {
-  return Number.isInteger(value)
-    ? value.toFixed(0)
-    : value.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+function percent(value) {
+  return `${Number(value || 0).toLocaleString("en-MY", {
+    maximumFractionDigits: 2,
+  })}%`;
 }
 
-function getNumber(input) {
-  const value = Number.parseFloat(input.value);
+function readNumber(input) {
+  const value = Number(input.value);
   return Number.isFinite(value) ? value : 0;
 }
 
-function populateSelect(select, items) {
-  select.innerHTML = "";
-  items.forEach((item) => {
-    const option = document.createElement("option");
-    option.value = item;
-    option.textContent = item;
-    select.append(option);
-  });
+function getCheckedValue(name) {
+  const checked = form.querySelector(`input[name="${name}"]:checked`);
+  return checked ? checked.value : "";
+}
+
+function getSelectedVariant() {
+  const variants = PROTON_MODELS[modelSelect.value] || [];
+  return variants.find((variant) => variant.name === variantSelect.value) || variants[0];
+}
+
+function getAutoRebate(model, variant) {
+  if (model === "Proton X50") {
+    return variant === "Flagship" ? 7000 : 5000;
+  }
+
+  return MODEL_REBATES[model] || 0;
 }
 
 function populateModels() {
-  populateSelect(modelSelect, Object.keys(vehicles));
-  modelSelect.value = "City";
-  populateVariants();
+  modelSelect.innerHTML = Object.keys(PROTON_MODELS)
+    .map((model) => `<option value="${model}">${model}</option>`)
+    .join("");
 }
 
-function populateVariants() {
-  const variants = Object.keys(vehicles[modelSelect.value].variants);
-  populateSelect(variantSelect, variants);
-  variantSelect.value = variants.includes("1.5L V") ? "1.5L V" : variants[0];
-  syncVariant();
+function populateVariants(preferredVariant = "") {
+  const variants = PROTON_MODELS[modelSelect.value] || [];
+  variantSelect.innerHTML = variants
+    .map((variant) => `<option value="${variant.name}">${variant.name}</option>`)
+    .join("");
+
+  const hasPreferred = variants.some((variant) => variant.name === preferredVariant);
+  variantSelect.value = hasPreferred ? preferredVariant : variants[0]?.name || "";
+  updatePriceFromVariant();
+  updateRebateFromSelection();
 }
 
-function populateColors() {
-  const currentColor = colorSelect.value;
-  const modelColors = colorAvailability[modelSelect.value];
-  const availableColors =
-    modelColors[variantSelect.value] || modelColors.default;
-
-  populateSelect(colorSelect, availableColors);
-  colorSelect.value = availableColors.includes(currentColor)
-    ? currentColor
-    : availableColors.includes("Platinum White Pearl")
-      ? "Platinum White Pearl"
-      : availableColors[0];
-  syncColor();
+function updatePriceFromVariant() {
+  const selectedVariant = getSelectedVariant();
+  if (selectedVariant) {
+    bodyPriceInput.value = selectedVariant.price;
+  }
 }
 
-function syncVariant() {
-  bodyPriceInput.value =
-    vehicles[modelSelect.value].variants[variantSelect.value];
-  populateColors();
+function updateRebateFromSelection() {
+  rebateInput.value = getAutoRebate(modelSelect.value, variantSelect.value);
 }
 
-function syncColor() {
-  const selectedColor = colors[colorSelect.value];
-  colorSurchargeInput.value =
-    colorSurcharges[modelSelect.value]?.[colorSelect.value] || 0;
-  colorSwatch.style.background = selectedColor.swatch;
-  calculate();
+function calculateMonthly(principal, annualRate, years) {
+  const totalMonths = years * 12;
+  if (!totalMonths) {
+    return 0;
+  }
+
+  const totalPayable = principal + principal * (annualRate / 100) * years;
+  return totalPayable / totalMonths;
 }
 
-function validateRebate(bodyPrice, colorSurcharge, rebate) {
-  const field = rebateInput.closest(".field");
-  const availablePrice = bodyPrice + colorSurcharge;
-  const hasError = rebate > availablePrice;
+function getDepositAmount(otrTotal) {
+  const depositOption = getCheckedValue("depositOption");
 
-  field.classList.toggle("has-error", hasError);
-  rebateInput.setAttribute("aria-invalid", String(hasError));
-  rebateMessage.textContent = hasError
-    ? "Rebate exceeds the vehicle price. Calculated totals are capped at RM 0.00."
-    : "";
+  if (depositOption === "ten") {
+    return otrTotal * 0.1;
+  }
+
+  if (depositOption === "custom") {
+    return Math.min(Math.max(readNumber(customDepositInput), 0), otrTotal);
+  }
+
+  return 0;
 }
 
-function syncDepositOption() {
-  const isCustom = depositOptionSelect.value === "custom";
-  customDepositField.classList.toggle("is-hidden", !isCustom);
-  customDepositInput.disabled = !isCustom;
-  calculate();
+function getDepositLabel() {
+  const depositOption = getCheckedValue("depositOption");
+
+  if (depositOption === "ten") {
+    return "10% deposit";
+  }
+
+  if (depositOption === "custom") {
+    return "Custom deposit";
+  }
+
+  return "Full loan";
 }
 
-function syncInsuranceOption() {
-  const includesInsurance = insuranceOptionSelect.value === "include";
-  ncdSelect.disabled = !includesInsurance;
-  calculate();
-}
+function buildTemplate(values) {
+  const insuranceLine =
+    values.insuranceOption === "with"
+      ? `Estimated insurance (${percent(values.ncd)} NCD): ${money(values.insurance)}`
+      : `Insurance: Excluded`;
 
-function validateDeposit(otrPrice, requestedDeposit) {
-  const hasError =
-    depositOptionSelect.value === "custom" && requestedDeposit > otrPrice;
+  const otrLine =
+    values.insuranceOption === "with"
+      ? `OTR with insurance: *${money(values.otrTotal)}*`
+      : `OTR without insurance: *${money(values.otrTotal)}*`;
 
-  customDepositField.classList.toggle("has-error", hasError);
-  customDepositInput.setAttribute("aria-invalid", String(hasError));
-  depositMessage.textContent = hasError
-    ? "Deposit exceeds the OTR price. Loan amount is capped at RM 0.00."
-    : "";
-}
+  const paymentLines = [
+    `${values.depositLabel}, ${BASE_COMPARISON_YEARS} years: *${money(values.baseMonthly)}/month*`,
+  ];
 
-function calculate() {
-  const bodyPrice = Math.max(0, getNumber(bodyPriceInput));
-  const colorSurcharge = Math.max(0, getNumber(colorSurchargeInput));
-  const rebate = Math.max(0, getNumber(rebateInput));
-  const interestRate =
-    Math.min(20, Math.max(0, getNumber(interestRateInput))) / 100;
-  const ncdPercentage = Math.min(
-    100,
-    Math.max(0, getNumber(ncdSelect)),
-  );
-  const ncd = ncdPercentage / 100;
-  const includesInsurance = insuranceOptionSelect.value === "include";
-  const insuranceRate = includesInsurance ? 0.03 : 0;
-  const loanYears = Math.min(
-    9,
-    Math.max(1, Math.round(getNumber(loanPeriodSelect))),
-  );
-  const loanMonths = loanYears * 12;
+  if (values.loanPeriod !== BASE_COMPARISON_YEARS) {
+    paymentLines.push(
+      `${values.depositLabel}, ${values.loanPeriod} years: *${money(values.selectedMonthly)}/month*`,
+    );
+  }
 
-  const priceAfterRebate = Math.max(
-    0,
-    bodyPrice + colorSurcharge - rebate,
-  );
-  const grossInsurance = priceAfterRebate * insuranceRate;
-  const estimatedInsurance = grossInsurance * (1 - ncd);
-  const otrPrice = priceAfterRebate + estimatedInsurance;
-  const isFullLoan = depositOptionSelect.value === "full";
-  const isCustomDeposit = depositOptionSelect.value === "custom";
-  const requestedDeposit = isFullLoan
-    ? 0
-    : isCustomDeposit
-      ? Math.max(0, getNumber(customDepositInput))
-      : otrPrice * 0.1;
-  const depositAmount = Math.min(otrPrice, requestedDeposit);
-  const depositLabel = isFullLoan
-    ? "Full loan"
-    : isCustomDeposit
-      ? "Custom deposit"
-      : "10% deposit";
-  const depositResultLabel = isFullLoan ? "Deposit amount" : depositLabel;
-  const selectedLoanLabel = isFullLoan
-    ? `Full loan, ${loanYears} ${loanYears === 1 ? "year" : "years"}`
-    : `${depositLabel}, loan ${loanYears} ${loanYears === 1 ? "year" : "years"}`;
-  const sevenYearLoanLabel = isFullLoan
-    ? "Full loan, 7 years"
-    : `${depositLabel}, loan 7 years`;
-  const loanAfterDeposit = otrPrice - depositAmount;
-  const monthlySelected =
-    (loanAfterDeposit + loanAfterDeposit * interestRate * loanYears) /
-    loanMonths;
-  const monthlyDeposit7 =
-    (loanAfterDeposit + loanAfterDeposit * interestRate * 7) / 84;
-
-  latestResult = {
-    model: modelSelect.value,
-    variant: variantSelect.value,
-    color: colorSelect.value,
-    bodyPrice,
-    colorSurcharge,
-    rebate,
-    interestRate: interestRate * 100,
-    ncd: ncdPercentage,
-    includesInsurance,
-    insuranceRate: insuranceRate * 100,
-    loanYears,
-    loanMonths,
-    priceAfterRebate,
-    estimatedInsurance,
-    otrPrice,
-    depositAmount,
-    depositLabel,
-    selectedLoanLabel,
-    sevenYearLoanLabel,
-    requestedDeposit,
-    loanAfterDeposit,
-    monthlySelected,
-    monthlyDeposit7,
-  };
-
-  Object.entries({
-    priceAfterRebate,
-    estimatedInsurance,
-    otrPrice,
-    depositAmount,
-    monthlySelected,
-    monthlyDeposit7,
-    monthlyHero: monthlySelected,
-  }).forEach(([key, value]) => {
-    outputElements[key].textContent = formatRM(value);
-  });
-
-  document.querySelector("#result-vehicle").textContent =
-    `Honda ${modelSelect.value} · ${variantSelect.value}`;
-  document.querySelector("#result-color").textContent = colorSelect.value;
-  document.querySelector("#estimated-insurance-label").textContent =
-    includesInsurance ? "Estimated insurance" : "Insurance excluded";
-  document.querySelector("#otr-price-label").textContent =
-    includesInsurance ? "OTR price with insurance" : "Price excluding insurance";
-  document.querySelector("#deposit-result-label").textContent =
-    depositResultLabel;
-  document.querySelector("#monthly-selected-label").textContent =
-    selectedLoanLabel;
-  document.querySelector("#monthly-selected-note").textContent =
-    `${loanYears} ${loanYears === 1 ? "year" : "years"} · ${loanMonths} months`;
-  document.querySelector("#monthly-deposit-7-label").textContent =
-    sevenYearLoanLabel;
-  document.querySelector("#monthly-hero-note").textContent =
-    `${depositLabel} · ${loanYears} ${loanYears === 1 ? "year" : "years"}`;
-
-  validateRebate(bodyPrice, colorSurcharge, rebate);
-  validateDeposit(otrPrice, requestedDeposit);
-  copyStatus.textContent = "";
-}
-
-function buildWhatsAppMessage() {
-  const result = latestResult;
   return [
-    "*HONDA LOAN ESTIMATE*",
+    "*PROTON LOAN ESTIMATE*",
     "",
-    `Model: Honda ${result.model}`,
-    `Variant: ${result.variant}`,
-    `Color: ${result.color}`,
+    `Model: ${values.model}`,
+    `Variant: ${values.variant}`,
     "",
-    `Body price: ${formatRM(result.bodyPrice)}`,
-    `Color surcharge: ${formatRM(result.colorSurcharge)}`,
-    `Rebate: ${formatRM(result.rebate)}`,
-    `Price after rebate: ${formatRM(result.priceAfterRebate)}`,
-    result.includesInsurance
-      ? `Estimated insurance (${formatPercentage(result.ncd)}% NCD): ${formatRM(result.estimatedInsurance)}`
-      : "Insurance: Excluded",
-    result.includesInsurance
-      ? `OTR with insurance: *${formatRM(result.otrPrice)}*`
-      : `Price excluding insurance: *${formatRM(result.otrPrice)}*`,
+    `Body price: ${money(values.bodyPrice)}`,
+    `Rebate: ${money(values.rebate)}`,
+    `Price after rebate: ${money(values.priceAfterRebate)}`,
     "",
-    `Deposit amount: ${formatRM(result.depositAmount)}`,
-    `Loan after deposit: ${formatRM(result.loanAfterDeposit)}`,
+    insuranceLine,
+    otrLine,
     "",
-    `${result.sevenYearLoanLabel}: *${formatRM(result.monthlyDeposit7)}/month*`,
-    `${result.selectedLoanLabel}: *${formatRM(result.monthlySelected)}/month*`,
+    `Deposit amount: ${money(values.depositAmount)}`,
+    `Loan after deposit: ${money(values.loanAfterDeposit)}`,
+    "",
+    ...paymentLines,
   ].join("\n");
 }
 
-async function copyResult() {
-  const message = buildWhatsAppMessage();
+function calculateValues() {
+  const bodyPrice = Math.max(readNumber(bodyPriceInput), 0);
+  const rebate = Math.max(readNumber(rebateInput), 0);
+  const interestRate = Math.max(readNumber(interestRateInput), 0);
+  const insuranceOption = getCheckedValue("insuranceOption");
+  const ncd = Math.max(Number(ncdSelect.value) || 0, 0);
+  const loanPeriod = Number(loanPeriodSelect.value) || DEFAULT_STATE.loanPeriod;
+  const priceAfterRebate = Math.max(bodyPrice - rebate, 0);
+  const insurance =
+    insuranceOption === "with"
+      ? priceAfterRebate * INSURANCE_RATE * Math.max(1 - ncd / 100, 0)
+      : 0;
+  const otrTotal = priceAfterRebate + insurance;
+  const depositAmount = getDepositAmount(otrTotal);
+  const loanAfterDeposit = Math.max(otrTotal - depositAmount, 0);
+  const baseMonthly = calculateMonthly(loanAfterDeposit, interestRate, BASE_COMPARISON_YEARS);
+  const selectedMonthly = calculateMonthly(loanAfterDeposit, interestRate, loanPeriod);
 
-  try {
-    await navigator.clipboard.writeText(message);
-  } catch {
-    const textarea = document.createElement("textarea");
-    textarea.value = message;
-    textarea.style.position = "fixed";
-    textarea.style.opacity = "0";
-    document.body.append(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    textarea.remove();
+  return {
+    model: modelSelect.value,
+    variant: variantSelect.value,
+    bodyPrice,
+    rebate,
+    interestRate,
+    insuranceOption,
+    ncd,
+    loanPeriod,
+    priceAfterRebate,
+    insurance,
+    otrTotal,
+    depositAmount,
+    depositLabel: getDepositLabel(),
+    loanAfterDeposit,
+    baseMonthly,
+    selectedMonthly,
+  };
+}
+
+function render() {
+  const values = calculateValues();
+  const template = buildTemplate(values);
+  const isCustomDeposit = getCheckedValue("depositOption") === "custom";
+
+  customDepositInput.disabled = !isCustomDeposit;
+  customDepositWrap.classList.toggle("is-muted", !isCustomDeposit);
+  templateOutput.value = template;
+  summaryOtr.textContent = money(values.otrTotal);
+  summaryLoan.textContent = money(values.loanAfterDeposit);
+  summaryDeposit.textContent = money(values.depositAmount);
+  summarySeven.textContent = `${money(values.baseMonthly)}/mo`;
+  summaryPeriodLabel.textContent = `${values.loanPeriod} Years`;
+  summarySelected.textContent = `${money(values.selectedMonthly)}/mo`;
+}
+
+function setStatus(message, type = "") {
+  copyState.textContent = message;
+  copyState.classList.remove("success", "error");
+
+  if (type) {
+    copyState.classList.add(type);
   }
 
-  copyStatus.textContent = "Copied. Ready to paste into WhatsApp.";
-  copyButton.querySelector("span").textContent = "Result copied";
-  window.setTimeout(() => {
-    copyButton.querySelector("span").textContent =
-      "Copy WhatsApp-ready result";
-  }, 1800);
+  window.clearTimeout(statusTimer);
+  statusTimer = window.setTimeout(() => {
+    copyState.textContent = "Ready";
+    copyState.classList.remove("success", "error");
+  }, 2400);
 }
 
-function resetCalculator() {
-  modelSelect.value = "City";
+async function copyTemplate() {
+  const template = templateOutput.value;
+
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(template);
+    } else {
+      templateOutput.focus();
+      templateOutput.select();
+      document.execCommand("copy");
+      window.getSelection()?.removeAllRanges();
+    }
+
+    setStatus("Copied", "success");
+  } catch (error) {
+    templateOutput.focus();
+    templateOutput.select();
+    setStatus("Select & copy", "error");
+  }
+}
+
+function resetDefaults() {
+  modelSelect.value = DEFAULT_STATE.model;
+  populateVariants(DEFAULT_STATE.variant);
+  interestRateInput.value = DEFAULT_STATE.interestRate;
+  ncdSelect.value = String(DEFAULT_STATE.ncd);
+  customDepositInput.value = DEFAULT_STATE.customDeposit;
+  loanPeriodSelect.value = String(DEFAULT_STATE.loanPeriod);
+  form.querySelector(`input[name="insuranceOption"][value="${DEFAULT_STATE.insuranceOption}"]`).checked = true;
+  form.querySelector(`input[name="depositOption"][value="${DEFAULT_STATE.depositOption}"]`).checked = true;
+  render();
+}
+
+modelSelect.addEventListener("change", () => {
   populateVariants();
-  variantSelect.value = "1.5L V";
-  syncVariant();
-  colorSelect.value = "Platinum White Pearl";
-  syncColor();
-  rebateInput.value = 0;
-  interestRateInput.value = 2.25;
-  insuranceOptionSelect.value = "include";
-  ncdSelect.value = 0;
-  depositOptionSelect.value = "full";
-  loanPeriodSelect.value = "9";
-  customDepositInput.value = 0;
-  syncInsuranceOption();
-  syncDepositOption();
-  calculate();
-}
+  render();
+});
 
-modelSelect.addEventListener("change", populateVariants);
-variantSelect.addEventListener("change", syncVariant);
-colorSelect.addEventListener("change", syncColor);
-insuranceOptionSelect.addEventListener("change", syncInsuranceOption);
-depositOptionSelect.addEventListener("change", syncDepositOption);
-form.addEventListener("input", calculate);
-form.addEventListener("change", calculate);
-copyButton.addEventListener("click", copyResult);
-resetButton.addEventListener("click", resetCalculator);
+variantSelect.addEventListener("change", () => {
+  updatePriceFromVariant();
+  updateRebateFromSelection();
+  render();
+});
+
+form.addEventListener("input", render);
+form.addEventListener("change", render);
+copyButton.addEventListener("click", copyTemplate);
+resetButton.addEventListener("click", resetDefaults);
 
 populateModels();
-syncInsuranceOption();
-syncDepositOption();
-calculate();
+resetDefaults();
