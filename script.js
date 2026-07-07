@@ -61,6 +61,33 @@ const colors = {
   "Blazing Red Pearl": { swatch: "#b71420" },
 };
 
+const vehicleImages = {
+  "City": {
+    src: "assets/models/city.png",
+    alt: "Honda City sedan",
+  },
+  "City Hatchback": {
+    src: "assets/models/city-hatchback.png",
+    alt: "Honda City Hatchback",
+  },
+  "WR-V": {
+    src: "assets/models/wr-v.png",
+    alt: "Honda WR-V compact SUV",
+  },
+  "Civic": {
+    src: "assets/models/civic.png",
+    alt: "Honda Civic sedan",
+  },
+  "HR-V": {
+    src: "assets/models/hr-v.png",
+    alt: "Honda HR-V SUV",
+  },
+  "CR-V": {
+    src: "assets/models/cr-v.png",
+    alt: "Honda CR-V SUV",
+  },
+};
+
 const colorAvailability = {
   "City": {
     default: [
@@ -178,6 +205,7 @@ const copyButton = document.querySelector("#copy-button");
 const copyStatus = document.querySelector("#copy-status");
 const resetButton = document.querySelector("#reset-button");
 const rebateMessage = document.querySelector("#rebate-message");
+const vehicleImage = document.querySelector("#vehicle-image");
 
 const outputElements = {
   priceAfterRebate: document.querySelector("#price-after-rebate"),
@@ -186,7 +214,6 @@ const outputElements = {
   depositAmount: document.querySelector("#deposit-amount"),
   monthlySelected: document.querySelector("#monthly-selected"),
   monthlyDeposit7: document.querySelector("#monthly-deposit-7"),
-  monthlyHero: document.querySelector("#monthly-hero"),
 };
 
 const currency = new Intl.NumberFormat("en-MY", {
@@ -398,14 +425,18 @@ function calculate() {
     depositAmount,
     monthlySelected,
     monthlyDeposit7,
-    monthlyHero: monthlySelected,
   }).forEach(([key, value]) => {
     outputElements[key].textContent = formatRM(value);
   });
 
+  const selectedVehicleImage =
+    vehicleImages[modelSelect.value] || vehicleImages.City;
+
   document.querySelector("#result-vehicle").textContent =
     `Honda ${modelSelect.value} · ${variantSelect.value}`;
   document.querySelector("#result-color").textContent = colorSelect.value;
+  vehicleImage.src = selectedVehicleImage.src;
+  vehicleImage.alt = selectedVehicleImage.alt;
   document.querySelector("#estimated-insurance-label").textContent =
     includesInsurance ? "Estimated insurance" : "Insurance excluded";
   document.querySelector("#otr-price-label").textContent =
@@ -418,8 +449,6 @@ function calculate() {
     `${loanYears} ${loanYears === 1 ? "year" : "years"} · ${loanMonths} months`;
   document.querySelector("#monthly-deposit-7-label").textContent =
     sevenYearLoanLabel;
-  document.querySelector("#monthly-hero-note").textContent =
-    `${depositLabel} · ${loanYears} ${loanYears === 1 ? "year" : "years"}`;
 
   validateRebate(bodyPrice, colorSurcharge, rebate);
   validateDeposit(otrPrice, requestedDeposit);

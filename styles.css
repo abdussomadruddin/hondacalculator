@@ -221,6 +221,10 @@ select {
   gap: 22px 18px;
 }
 
+.financing-grid {
+  grid-template-columns: 1fr;
+}
+
 .field {
   display: flex;
   min-width: 0;
@@ -418,33 +422,21 @@ select {
   box-shadow: 0 0 0 4px rgba(91, 208, 130, 0.12);
 }
 
-.primary-result {
-  display: flex;
-  flex-direction: column;
-  padding: 28px 30px;
+.vehicle-visual {
+  position: relative;
+  min-height: 224px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background:
-    linear-gradient(110deg, rgba(228, 5, 33, 0.18), transparent 70%),
-    #1b1b1e;
+  background: #111;
+  overflow: hidden;
 }
 
-.primary-result > span {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
-}
-
-.primary-result strong {
-  margin: 7px 0 2px;
-  font-family: "Manrope", sans-serif;
-  font-size: clamp(34px, 4vw, 48px);
-  letter-spacing: -0.045em;
-  overflow-wrap: anywhere;
-}
-
-.primary-result small {
-  color: #ff8391;
-  font-size: 11px;
+.vehicle-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .result-grid {
@@ -459,7 +451,7 @@ select {
   min-height: 106px;
   flex-direction: column;
   justify-content: center;
-  padding: 20px 24px;
+  padding: 24px 28px;
   background: #19191c;
 }
 
@@ -468,11 +460,12 @@ select {
 }
 
 .result-card > span {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   color: rgba(255, 255, 255, 0.45);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.02em;
+  line-height: 1.25;
   text-transform: uppercase;
 }
 
@@ -480,13 +473,15 @@ select {
   font-family: "Manrope", sans-serif;
   font-size: 19px;
   letter-spacing: -0.025em;
+  line-height: 1.08;
   overflow-wrap: anywhere;
 }
 
 .result-card small {
-  margin-top: 4px;
+  margin-top: 10px;
   color: rgba(255, 255, 255, 0.34);
   font-size: 10px;
+  line-height: 1.25;
 }
 
 .result-card-accent {
@@ -678,21 +673,13 @@ footer span:first-child {
     font-size: clamp(10px, 1vmin, 13px);
   }
 
-  .primary-result {
+  .vehicle-visual {
     flex: 0 0 auto;
-    padding: clamp(22px, 3vmin, 48px) clamp(18px, 2vmin, 34px);
+    min-height: clamp(210px, 27vmin, 370px);
   }
 
-  .primary-result > span {
-    font-size: clamp(12px, 1.2vmin, 16px);
-  }
-
-  .primary-result strong {
-    font-size: clamp(44px, 6vmin, 82px);
-  }
-
-  .primary-result small {
-    font-size: clamp(11px, 1.1vmin, 15px);
+  .vehicle-visual img {
+    height: 100%;
   }
 
   .result-grid {
@@ -703,10 +690,11 @@ footer span:first-child {
 
   .result-card {
     min-height: 0;
-    padding: clamp(14px, 2vmin, 30px);
+    padding: clamp(20px, 2.45vmin, 36px) clamp(24px, 3vmin, 44px);
   }
 
   .result-card > span {
+    margin-bottom: clamp(10px, 1.15vmin, 16px);
     font-size: clamp(9px, 0.95vmin, 12px);
   }
 
@@ -715,14 +703,17 @@ footer span:first-child {
   }
 
   .result-card small {
+    margin-top: clamp(8px, 1vmin, 14px);
     font-size: clamp(10px, 1vmin, 13px);
   }
 
   .copy-button {
     flex: 0 0 auto;
     width: calc(100% - clamp(36px, 4vmin, 68px));
-    min-height: clamp(42px, 4.2vmin, 58px);
+    min-height: clamp(50px, 5vmin, 66px);
     margin: clamp(14px, 1.8vmin, 26px) clamp(18px, 2vmin, 34px) 0;
+    padding: clamp(12px, 1.35vmin, 18px) clamp(20px, 2.5vmin, 34px);
+    font-size: clamp(13px, 1.12vmin, 16px);
   }
 
   .copy-status {
@@ -781,9 +772,12 @@ footer span:first-child {
   }
 
   .results-header,
-  .primary-result {
-    padding-right: 22px;
-    padding-left: 22px;
+  .vehicle-visual {
+    min-height: 218px;
+  }
+
+  .vehicle-visual img {
+    height: 100%;
   }
 
   .result-grid {
@@ -795,8 +789,8 @@ footer span:first-child {
   }
 
   .result-card {
-    min-height: 92px;
-    padding: 18px 22px;
+    min-height: 104px;
+    padding: 22px 24px;
   }
 
   .copy-button {
