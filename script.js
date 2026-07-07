@@ -309,6 +309,7 @@ function validateRebate(bodyPrice, colorSurcharge, rebate) {
 
 function syncDepositOption() {
   const isCustom = depositOptionSelect.value === "custom";
+  form.classList.toggle("has-custom-deposit", isCustom);
   customDepositField.classList.toggle("is-hidden", !isCustom);
   customDepositInput.disabled = !isCustom;
   calculate();

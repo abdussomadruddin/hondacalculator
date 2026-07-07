@@ -374,6 +374,10 @@ select {
   color: var(--red) !important;
 }
 
+.validation-message:empty {
+  display: none;
+}
+
 .field.has-error input,
 .field.has-error .input-prefix {
   border-color: var(--red);
@@ -600,6 +604,10 @@ footer span:first-child {
     padding: clamp(16px, 1.7vmin, 28px);
   }
 
+  .form-panel.has-custom-deposit {
+    padding: clamp(12px, 1.4vmin, 24px);
+  }
+
   .form-section-heading {
     gap: clamp(8px, 0.8vmin, 12px);
     margin-bottom: clamp(10px, 1.2vmin, 18px);
@@ -618,8 +626,16 @@ footer span:first-child {
     gap: clamp(7px, 0.85vmin, 13px) clamp(9px, 1vmin, 16px);
   }
 
+  .has-custom-deposit .field-grid {
+    gap: clamp(5px, 0.6vmin, 10px) clamp(8px, 0.9vmin, 14px);
+  }
+
   .field {
     gap: clamp(4px, 0.5vmin, 7px);
+  }
+
+  .has-custom-deposit .field {
+    gap: clamp(3px, 0.35vmin, 5px);
   }
 
   .field > span:first-child {
@@ -639,6 +655,14 @@ footer span:first-child {
     height: clamp(33px, 3.1vmin, 44px);
   }
 
+  .has-custom-deposit .field input,
+  .has-custom-deposit .field select,
+  .has-custom-deposit .input-prefix,
+  .has-custom-deposit .input-suffix,
+  .has-custom-deposit .color-swatch {
+    height: clamp(30px, 2.8vmin, 40px);
+  }
+
   .field input,
   .field select {
     font-size: clamp(12px, 1.15vmin, 14px);
@@ -649,8 +673,17 @@ footer span:first-child {
     height: calc(clamp(33px, 3.1vmin, 44px) - 2px);
   }
 
+  .has-custom-deposit .input-prefix input,
+  .has-custom-deposit .input-suffix input {
+    height: calc(clamp(30px, 2.8vmin, 40px) - 2px);
+  }
+
   .form-divider {
     margin: clamp(10px, 1.2vmin, 18px) 0;
+  }
+
+  .has-custom-deposit .form-divider {
+    margin: clamp(8px, 0.9vmin, 14px) 0;
   }
 
   .results-panel {
