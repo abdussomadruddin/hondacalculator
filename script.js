@@ -211,6 +211,11 @@ function getNumber(input) {
   return Number.isFinite(value) ? value : 0;
 }
 
+function calculateMonthlyPayment(loanAmount, annualInterestRate, years) {
+  const months = years * 12;
+  return (loanAmount + loanAmount * annualInterestRate * years) / months;
+}
+
 function populateSelect(select, items) {
   select.innerHTML = "";
   items.forEach((item) => {
@@ -311,7 +316,7 @@ function calculate() {
   );
   const ncd = ncdPercentage / 100;
   const includesInsurance = insuranceOptionSelect.value === "include";
-  const insuranceRate = includesInsurance ? 0.03 : 0;
+  const insuranceRate = includesInsurance ? 0.033 : 0;
   const loanYears = Math.min(
     9,
     Math.max(1, Math.round(getNumber(loanPeriodSelect))),
@@ -346,11 +351,17 @@ function calculate() {
     ? "Full loan, 7 years"
     : `${depositLabel}, loan 7 years`;
   const loanAfterDeposit = otrPrice - depositAmount;
-  const monthlySelected =
-    (loanAfterDeposit + loanAfterDeposit * interestRate * loanYears) /
-    loanMonths;
-  const monthlyDeposit7 =
-    (loanAfterDeposit + loanAfterDeposit * interestRate * 7) / 84;
+  const monthlyFullLoan9 = calculateMonthlyPayment(otrPrice, interestRate, 9);
+  const monthlySelected = calculateMonthlyPayment(
+    loanAfterDeposit,
+    interestRate,
+    loanYears,
+  );
+  const monthlyDeposit7 = calculateMonthlyPayment(
+    loanAfterDeposit,
+    interestRate,
+    7,
+  );
 
   latestResult = {
     model: modelSelect.value,
@@ -372,8 +383,10 @@ function calculate() {
     depositLabel,
     selectedLoanLabel,
     sevenYearLoanLabel,
+    fullLoan9Label: "Full loan, 9 years",
     requestedDeposit,
     loanAfterDeposit,
+    monthlyFullLoan9,
     monthlySelected,
     monthlyDeposit7,
   };
@@ -436,9 +449,35 @@ function buildWhatsAppMessage() {
     `Deposit amount: ${formatRM(result.depositAmount)}`,
     `Loan after deposit: ${formatRM(result.loanAfterDeposit)}`,
     "",
+    `${result.fullLoan9Label}: *${formatRM(result.monthlyFullLoan9)}/month*`,
     `${result.sevenYearLoanLabel}: *${formatRM(result.monthlyDeposit7)}/month*`,
+    "",
     `${result.selectedLoanLabel}: *${formatRM(result.monthlySelected)}/month*`,
   ].join("\n");
+}
+
+function lockPageZoom() {
+  const zoomKeys = new Set(["+", "-", "=", "_", "0"]);
+
+  document.addEventListener(
+    "wheel",
+    (event) => {
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+      }
+    },
+    { passive: false },
+  );
+
+  document.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && zoomKeys.has(event.key)) {
+      event.preventDefault();
+    }
+  });
+
+  ["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
+    document.addEventListener(eventName, (event) => event.preventDefault());
+  });
 }
 
 async function copyResult() {
@@ -497,4 +536,5 @@ resetButton.addEventListener("click", resetCalculator);
 populateModels();
 syncInsuranceOption();
 syncDepositOption();
+lockPageZoom();
 calculate();
