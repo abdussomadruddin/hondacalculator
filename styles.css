@@ -674,8 +674,9 @@ footer span:first-child {
   }
 
   .vehicle-visual {
-    flex: 0 0 auto;
-    min-height: clamp(210px, 27vmin, 370px);
+    flex: 0 0 clamp(210px, 22vmin, 320px);
+    height: clamp(210px, 22vmin, 320px);
+    min-height: 0;
   }
 
   .vehicle-visual img {
@@ -690,11 +691,11 @@ footer span:first-child {
 
   .result-card {
     min-height: 0;
-    padding: clamp(20px, 2.45vmin, 36px) clamp(24px, 3vmin, 44px);
+    padding: clamp(14px, 1.8vmin, 30px) clamp(24px, 3vmin, 44px);
   }
 
   .result-card > span {
-    margin-bottom: clamp(10px, 1.15vmin, 16px);
+    margin-bottom: clamp(8px, 0.95vmin, 14px);
     font-size: clamp(9px, 0.95vmin, 12px);
   }
 
@@ -703,15 +704,15 @@ footer span:first-child {
   }
 
   .result-card small {
-    margin-top: clamp(8px, 1vmin, 14px);
+    margin-top: clamp(6px, 0.8vmin, 12px);
     font-size: clamp(10px, 1vmin, 13px);
   }
 
   .copy-button {
     flex: 0 0 auto;
     width: calc(100% - clamp(36px, 4vmin, 68px));
-    min-height: clamp(50px, 5vmin, 66px);
-    margin: clamp(14px, 1.8vmin, 26px) clamp(18px, 2vmin, 34px) 0;
+    min-height: clamp(48px, 4.8vmin, 64px);
+    margin: clamp(10px, 1.3vmin, 22px) clamp(18px, 2vmin, 34px) 0;
     padding: clamp(12px, 1.35vmin, 18px) clamp(20px, 2.5vmin, 34px);
     font-size: clamp(13px, 1.12vmin, 16px);
   }
