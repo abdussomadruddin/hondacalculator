@@ -545,7 +545,7 @@ function resetCalculator() {
   interestRateInput.value = 2.25;
   insuranceOptionSelect.value = "include";
   ncdSelect.value = 0;
-  depositOptionSelect.value = "full";
+  depositOptionSelect.value = "10";
   loanPeriodSelect.value = "9";
   customDepositInput.value = 0;
   syncInsuranceOption();
