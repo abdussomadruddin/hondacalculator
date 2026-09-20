@@ -433,6 +433,8 @@ function calculate() {
   const selectedVehicleImage =
     vehicleImages[modelSelect.value] || vehicleImages.City;
 
+  document.querySelector("#mobile-monthly").textContent = formatRM(monthlySelected);
+
   document.querySelector("#result-vehicle").textContent =
     `Honda ${modelSelect.value} · ${variantSelect.value}`;
   document.querySelector("#result-color").textContent = colorSelect.value;

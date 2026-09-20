@@ -241,7 +241,7 @@
             </div>
           </form>
 
-          <aside class="results-panel" aria-live="polite">
+          <aside class="results-panel" id="results" aria-live="polite" aria-label="Loan estimate">
             <div class="results-header">
               <div>
                 <span class="eyebrow">ESTIMATED SUMMARY</span>
@@ -315,6 +315,11 @@
       <span>Built for faster, clearer customer conversations.</span>
     </footer>
 
-    <script src="script.js?v=20260707-2"></script>
+    <nav class="mobile-estimate" aria-label="Quick estimate">
+      <div><span>Estimated monthly</span><strong id="mobile-monthly">RM 0.00</strong></div>
+      <a href="#results">View result <span aria-hidden="true">&rarr;</span></a>
+    </nav>
+
+    <script src="script.js?v=20260920"></script>
   </body>
 </html>
