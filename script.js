@@ -1,186 +1,157 @@
+// Honda Malaysia, Peninsular private registration. Verified 2 October 2026.
 const vehicles = {
   "City": {
+    slug: "city",
     variants: {
-      "1.5L S": 84900,
-      "1.5L E": 89900,
-      "1.5L V": 94900,
-      "1.5L RS": 99900,
-      "1.5L e:HEV RS": 111900,
+      "1.5L E": { bodyPrice: 89560, retailPrice: 89900 },
+      "1.5L V": { bodyPrice: 94560, retailPrice: 94900 },
+      "1.5L RS": { bodyPrice: 99560, retailPrice: 99900 },
+      "1.5L e:HEV RS": { bodyPrice: 111560, retailPrice: 111900 },
     },
   },
   "City Hatchback": {
+    slug: "city-hatchback",
     variants: {
-      "1.5L S": 85900,
-      "1.5L E": 90900,
-      "1.5L V": 95900,
-      "1.5L RS": 100900,
-      "1.5L e:HEV RS": 112900,
+      "1.5L S": { bodyPrice: 85560, retailPrice: 85900 },
+      "1.5L E": { bodyPrice: 90560, retailPrice: 90900 },
+      "1.5L V": { bodyPrice: 95560, retailPrice: 95900 },
+      "1.5L RS": { bodyPrice: 100560, retailPrice: 100900 },
+      "1.5L e:HEV RS": { bodyPrice: 112560, retailPrice: 112900 },
     },
   },
   "WR-V": {
+    slug: "wr-v",
     variants: {
-      "1.5L S": 89900,
-      "1.5L E": 95900,
-      "1.5L V": 99900,
-      "1.5L RS": 107900,
+      "1.5L E": { bodyPrice: 94560, retailPrice: 94900 },
+      "1.5L V": { bodyPrice: 98560, retailPrice: 98900 },
+      "1.5L RS": { bodyPrice: 104560, retailPrice: 104900 },
     },
   },
   "Civic": {
+    slug: "civic",
     variants: {
-      "1.5L E": 133900,
-      "1.5L V": 144900,
-      "1.5L RS": 149900,
-      "2.0L e:HEV RS": 167900,
+      "1.5L E": { bodyPrice: 133560, retailPrice: 133900 },
+      "1.5L V": { bodyPrice: 144560, retailPrice: 144900 },
+      "1.5L RS": { bodyPrice: 149560, retailPrice: 149900 },
+      "2.0L e:HEV RS": { bodyPrice: 167123.5, retailPrice: 167900 },
     },
   },
   "HR-V": {
+    slug: "hrv",
     variants: {
-      "1.5L S": 115900,
-      "1.5L Turbo E": 130900,
-      "1.5L Turbo V": 137900,
-      "1.5L e:HEV RS": 143900,
+      "1.5L S": { bodyPrice: 115530, retailPrice: 115900 },
+      "1.5L T E": { bodyPrice: 130530, retailPrice: 130900 },
+      "1.5L T V": { bodyPrice: 137530, retailPrice: 137900 },
+      "1.5L e:HEV RS": { bodyPrice: 143530, retailPrice: 143900 },
     },
   },
   "CR-V": {
+    slug: "crv",
     variants: {
-      "2.0L e:HEV E": 178200,
-      "1.5L Turbo V AWD": 181900,
-      "2.0L e:HEV RS": 195900,
+      "2.0L e:HEV E": { bodyPrice: 177362.8, retailPrice: 178200 },
+      "1.5L V": { bodyPrice: 181530, retailPrice: 181900 },
+      "2.0L e:HEV RS": { bodyPrice: 195062.8, retailPrice: 195900 },
+    },
+  },
+  "Type R": {
+    slug: "type-r",
+    variants: {
+      "Type R": { bodyPrice: 399072, retailPrice: 399900 },
+    },
+  },
+  "e:N1": {
+    slug: "en1",
+    variants: {
+      "e:N1": { bodyPrice: 149402, retailPrice: 150060 },
+    },
+  },
+  "Prelude": {
+    slug: "prelude",
+    variants: {
+      "Prelude": { bodyPrice: 277173.5, retailPrice: 278000 },
     },
   },
 };
 
+// Published September offers expired on 30 September 2026.
+// City launch rewards are eligibility/stock limited and have no published
+// unconditional amount. Do not assume either is a current cash rebate.
+const defaultRebate = 0;
+
 const colors = {
   "Platinum White Pearl": { swatch: "#f0eee6" },
   "Ignite Red Metallic": { swatch: "#b40b20" },
-  "Phoenix Orange Pearl": { swatch: "#e8471b" },
   "Stellar Diamond Pearl": { swatch: "#cbd5db" },
   "Meteoroid Gray Metallic": { swatch: "#53555a" },
   "Canyon River Blue Metallic": { swatch: "#334d64" },
   "Crystal Black Pearl": { swatch: "#17181a" },
   "Blazing Red Pearl": { swatch: "#b71420" },
+  "Blazing Red Pearl + Dual Tone": { swatch: "linear-gradient(#17181a 35%, #b71420 35%)" },
+  "Championship White": { swatch: "#f1efdf" },
+  "Aqua Topaz Metallic": { swatch: "#7aabac" },
+  "Urban Grey Pearl": { swatch: "#92958f" },
+  "Winter Frost Pearl": { swatch: "#f1f3f5" },
+  "Rallye Red": { swatch: "#ce1727" },
 };
 
 const vehicleImages = {
-  "City": {
-    src: "assets/models/city.png",
-    alt: "Honda City sedan",
-  },
-  "City Hatchback": {
-    src: "assets/models/city-hatchback.png",
-    alt: "Honda City Hatchback",
-  },
-  "WR-V": {
-    src: "assets/models/wr-v.png",
-    alt: "Honda WR-V compact SUV",
-  },
-  "Civic": {
-    src: "assets/models/civic.png",
-    alt: "Honda Civic sedan",
-  },
-  "HR-V": {
-    src: "assets/models/hr-v.png",
-    alt: "Honda HR-V SUV",
-  },
-  "CR-V": {
-    src: "assets/models/cr-v.png",
-    alt: "Honda CR-V SUV",
-  },
+  "City": { src: "assets/models/city.png", alt: "Honda City sedan" },
+  "City Hatchback": { src: "assets/models/city-hatchback.png", alt: "Honda City Hatchback" },
+  "WR-V": { src: "assets/models/wr-v.png", alt: "Honda WR-V compact SUV" },
+  "Civic": { src: "assets/models/civic.png", alt: "Honda Civic sedan" },
+  "HR-V": { src: "assets/models/hr-v.png", alt: "Honda HR-V SUV" },
+  "CR-V": { src: "assets/models/cr-v.png", alt: "Honda CR-V SUV" },
+  "Type R": { src: "assets/models/type-r.png", alt: "Honda Civic Type R" },
+  "e:N1": { src: "assets/models/en1.png", alt: "Honda e:N1 electric SUV" },
+  "Prelude": { src: "assets/models/prelude.png", alt: "Honda Prelude coupe" },
 };
 
 const colorAvailability = {
   "City": {
-    default: [
-      "Phoenix Orange Pearl",
-      "Ignite Red Metallic",
-      "Meteoroid Gray Metallic",
-      "Platinum White Pearl",
-      "Stellar Diamond Pearl",
-    ],
-    "1.5L e:HEV RS": [
-      "Phoenix Orange Pearl",
-      "Ignite Red Metallic",
-      "Meteoroid Gray Metallic",
-      "Platinum White Pearl",
-    ],
+    default: ["Platinum White Pearl", "Meteoroid Gray Metallic", "Blazing Red Pearl"],
+    "1.5L V": ["Platinum White Pearl", "Meteoroid Gray Metallic", "Stellar Diamond Pearl", "Blazing Red Pearl"],
+    "1.5L RS": ["Platinum White Pearl", "Meteoroid Gray Metallic", "Stellar Diamond Pearl", "Blazing Red Pearl"],
   },
   "City Hatchback": {
-    default: [
-      "Ignite Red Metallic",
-      "Platinum White Pearl",
-      "Stellar Diamond Pearl",
-      "Meteoroid Gray Metallic",
-      "Phoenix Orange Pearl",
-    ],
-    "1.5L e:HEV RS": [
-      "Ignite Red Metallic",
-      "Platinum White Pearl",
-      "Meteoroid Gray Metallic",
-      "Phoenix Orange Pearl",
-    ],
+    default: ["Ignite Red Metallic", "Platinum White Pearl", "Stellar Diamond Pearl", "Meteoroid Gray Metallic"],
+    "1.5L e:HEV RS": ["Ignite Red Metallic", "Platinum White Pearl", "Meteoroid Gray Metallic"],
   },
   "WR-V": {
-    default: [
-      "Ignite Red Metallic",
-      "Platinum White Pearl",
-      "Stellar Diamond Pearl",
-      "Meteoroid Gray Metallic",
-      "Phoenix Orange Pearl",
-    ],
+    default: ["Platinum White Pearl", "Meteoroid Gray Metallic", "Stellar Diamond Pearl", "Blazing Red Pearl"],
+    "1.5L RS": ["Platinum White Pearl", "Meteoroid Gray Metallic", "Stellar Diamond Pearl", "Blazing Red Pearl", "Blazing Red Pearl + Dual Tone"],
   },
   "Civic": {
-    default: [
-      "Canyon River Blue Metallic",
-      "Platinum White Pearl",
-      "Meteoroid Gray Metallic",
-      "Crystal Black Pearl",
-      "Ignite Red Metallic",
-    ],
-    "2.0L e:HEV RS": [
-      "Canyon River Blue Metallic",
-      "Platinum White Pearl",
-      "Meteoroid Gray Metallic",
-      "Ignite Red Metallic",
-    ],
+    default: ["Canyon River Blue Metallic", "Platinum White Pearl", "Meteoroid Gray Metallic", "Ignite Red Metallic"],
+    "1.5L V": ["Canyon River Blue Metallic", "Platinum White Pearl", "Meteoroid Gray Metallic", "Crystal Black Pearl", "Ignite Red Metallic"],
   },
   "HR-V": {
-    default: [
-      "Platinum White Pearl",
-      "Stellar Diamond Pearl",
-      "Meteoroid Gray Metallic",
-      "Crystal Black Pearl",
-      "Phoenix Orange Pearl",
-    ],
+    default: ["Platinum White Pearl", "Stellar Diamond Pearl", "Meteoroid Gray Metallic", "Crystal Black Pearl"],
   },
   "CR-V": {
-    default: [
-      "Canyon River Blue Metallic",
-      "Platinum White Pearl",
-      "Meteoroid Gray Metallic",
-      "Blazing Red Pearl",
-    ],
+    default: ["Canyon River Blue Metallic", "Platinum White Pearl", "Meteoroid Gray Metallic", "Blazing Red Pearl"],
   },
+  "Type R": { default: ["Championship White"] },
+  "e:N1": { default: ["Platinum White Pearl", "Aqua Topaz Metallic", "Urban Grey Pearl"] },
+  "Prelude": { default: ["Winter Frost Pearl", "Rallye Red", "Crystal Black Pearl"] },
 };
 
 const colorSurcharges = {
-  "City": {
-    "Platinum White Pearl": 400,
-    "Phoenix Orange Pearl": 400,
-    "Ignite Red Metallic": 400,
-  },
-  "City Hatchback": {
-    "Platinum White Pearl": 400,
-    "Phoenix Orange Pearl": 400,
-    "Ignite Red Metallic": 400,
-  },
+  "City": { "Platinum White Pearl": 400, "Blazing Red Pearl": 400 },
+  "City Hatchback": { "Platinum White Pearl": 400, "Ignite Red Metallic": 400 },
   "WR-V": {
     "Platinum White Pearl": 400,
-    "Phoenix Orange Pearl": 400,
-    "Ignite Red Metallic": 400,
+    "Blazing Red Pearl": 400,
+    "Blazing Red Pearl + Dual Tone": 2200,
   },
   "Civic": {
     "Platinum White Pearl": 800,
     "Ignite Red Metallic": 800,
+    "Canyon River Blue Metallic": 800,
+  },
+  "HR-V": { "Platinum White Pearl": 800 },
+  "CR-V": {
+    "Platinum White Pearl": 800,
+    "Blazing Red Pearl": 800,
     "Canyon River Blue Metallic": 800,
   },
 };
@@ -282,8 +253,11 @@ function populateColors() {
 }
 
 function syncVariant() {
-  bodyPriceInput.value =
-    vehicles[modelSelect.value].variants[variantSelect.value];
+  const model = vehicles[modelSelect.value];
+  bodyPriceInput.value = model.variants[variantSelect.value].bodyPrice;
+  rebateInput.value = defaultRebate;
+  document.querySelector("#pricing-source").href =
+    `https://www.honda.com.my/model/${model.slug}/pricing`;
   populateColors();
 }
 
@@ -350,6 +324,9 @@ function calculate() {
     Math.max(1, Math.round(getNumber(loanPeriodSelect))),
   );
   const loanMonths = loanYears * 12;
+  const variant = vehicles[modelSelect.value].variants[variantSelect.value];
+  // Use the published OTR/selling-price difference so charges are not counted twice.
+  const onRoadFees = Math.round((variant.retailPrice - variant.bodyPrice) * 100) / 100;
 
   const priceAfterRebate = Math.max(
     0,
@@ -357,7 +334,7 @@ function calculate() {
   );
   const grossInsurance = priceAfterRebate * insuranceRate;
   const estimatedInsurance = grossInsurance * (1 - ncd);
-  const otrPrice = priceAfterRebate + estimatedInsurance;
+  const otrPrice = priceAfterRebate + onRoadFees + estimatedInsurance;
   const isFullLoan = depositOptionSelect.value === "full";
   const isCustomDeposit = depositOptionSelect.value === "custom";
   const requestedDeposit = isFullLoan
@@ -405,6 +382,7 @@ function calculate() {
     loanYears,
     loanMonths,
     priceAfterRebate,
+    onRoadFees,
     estimatedInsurance,
     otrPrice,
     depositAmount,
@@ -443,7 +421,9 @@ function calculate() {
   document.querySelector("#estimated-insurance-label").textContent =
     includesInsurance ? "Estimated insurance" : "Insurance excluded";
   document.querySelector("#otr-price-label").textContent =
-    includesInsurance ? "OTR price with insurance" : "Price excluding insurance";
+    includesInsurance ? "OTR price with insurance" : "OTR price without insurance";
+  document.querySelector("#otr-fees-note").textContent =
+    `Includes ${formatRM(onRoadFees)} on-road fees`;
   document.querySelector("#deposit-result-label").textContent =
     depositResultLabel;
   document.querySelector("#monthly-selected-label").textContent =
@@ -471,12 +451,13 @@ function buildWhatsAppMessage() {
     `Color surcharge: ${formatRM(result.colorSurcharge)}`,
     `Rebate: ${formatRM(result.rebate)}`,
     `Price after rebate: ${formatRM(result.priceAfterRebate)}`,
+    `On-road fees: ${formatRM(result.onRoadFees)}`,
     result.includesInsurance
       ? `Estimated insurance (${formatPercentage(result.ncd)}% NCD): ${formatRM(result.estimatedInsurance)}`
       : "Insurance: Excluded",
     result.includesInsurance
       ? `OTR with insurance: *${formatRM(result.otrPrice)}*`
-      : `Price excluding insurance: *${formatRM(result.otrPrice)}*`,
+      : `OTR without insurance: *${formatRM(result.otrPrice)}*`,
     "",
     `Deposit amount: ${formatRM(result.depositAmount)}`,
     `Loan after deposit: ${formatRM(result.loanAfterDeposit)}`,
@@ -543,7 +524,7 @@ function resetCalculator() {
   syncVariant();
   colorSelect.value = "Platinum White Pearl";
   syncColor();
-  rebateInput.value = 0;
+  rebateInput.value = defaultRebate;
   interestRateInput.value = 2.25;
   insuranceOptionSelect.value = "include";
   ncdSelect.value = 0;
@@ -560,7 +541,12 @@ variantSelect.addEventListener("change", syncVariant);
 colorSelect.addEventListener("change", syncColor);
 insuranceOptionSelect.addEventListener("change", syncInsuranceOption);
 depositOptionSelect.addEventListener("change", syncDepositOption);
-form.addEventListener("input", calculate);
+form.addEventListener("input", (event) => {
+  // Selects calculate on change, after their dependent options are refreshed.
+  if (event.target instanceof HTMLInputElement) {
+    calculate();
+  }
+});
 form.addEventListener("change", calculate);
 copyButton.addEventListener("click", copyResult);
 resetButton.addEventListener("click", resetCalculator);

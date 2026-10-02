@@ -99,11 +99,11 @@
                       name="bodyPrice"
                       type="number"
                       min="0"
-                      step="100"
+                      step="0.01"
                       inputmode="decimal"
                     />
                   </span>
-                  <small>Indicative preset, fully editable</small>
+                  <small><a id="pricing-source" href="https://www.honda.com.my/model/city/pricing" target="_blank" rel="noopener noreferrer">Official selling price (Peninsular)</a></small>
                 </label>
 
                 <label class="field">
@@ -135,6 +135,7 @@
                       inputmode="decimal"
                     />
                   </span>
+                  <small>Current rebate: confirm with dealer</small>
                   <small class="validation-message" id="rebate-message"></small>
                 </label>
               </div>
@@ -274,6 +275,7 @@
               <article class="result-card result-card-wide">
                 <span id="otr-price-label">OTR price with insurance</span>
                 <strong id="otr-price">RM 0.00</strong>
+                <small id="otr-fees-note"></small>
               </article>
               <article class="result-card">
                 <span id="deposit-result-label">Deposit amount</span>
@@ -303,6 +305,10 @@
         </div>
 
         <p class="disclaimer">
+          Honda Malaysia Peninsular private-registration prices checked 2 October 2026.
+          Rebate defaults to RM0: the published September promotion has expired;
+          City launch rewards require dealer confirmation.
+          Insurance uses a 3.3% estimate before NCD; the 2.25% interest rate is an editable estimate.
           This calculator provides an indicative estimate only. Final vehicle
           price, insurance premium, interest rate, and financing approval are
           subject to confirmation by the sales advisor, insurer, and bank.
@@ -320,6 +326,6 @@
       <a href="#results">View result <span aria-hidden="true">&rarr;</span></a>
     </nav>
 
-    <script src="script.js?v=20260920"></script>
+    <script src="script.js?v=20261002"></script>
   </body>
 </html>
