@@ -1,4 +1,4 @@
-// Honda Malaysia, Peninsular private registration. Verified 2 October 2026.
+// Honda Malaysia, Peninsular private registration. Verified 29 October 2026.
 const vehicles = {
   "City": {
     slug: "city",
@@ -12,8 +12,6 @@ const vehicles = {
   "City Hatchback": {
     slug: "city-hatchback",
     variants: {
-      "1.5L S": { bodyPrice: 85560, retailPrice: 85900 },
-      "1.5L E": { bodyPrice: 90560, retailPrice: 90900 },
       "1.5L V": { bodyPrice: 95560, retailPrice: 95900 },
       "1.5L RS": { bodyPrice: 100560, retailPrice: 100900 },
       "1.5L e:HEV RS": { bodyPrice: 112560, retailPrice: 112900 },
@@ -73,10 +71,44 @@ const vehicles = {
   },
 };
 
-// Published September offers expired on 30 September 2026.
-// City launch rewards are eligibility/stock limited and have no published
-// unconditional amount. Do not assume either is a current cash rebate.
-const defaultRebate = 0;
+const promotion = {
+  startsOn: "2026-10-01",
+  endsOn: "2026-10-31",
+  launchStartsOn: "2026-10-19",
+  rewards: { "City": 7000, "City Hatchback": 4000, "Civic": 20000, "HR-V": 20000, "CR-V": 20000, "WR-V": 8000 },
+};
+
+function isPromotionActive(date = new Date()) {
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kuala_Lumpur",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+  return today >= promotion.startsOn && today <= promotion.endsOn;
+}
+
+function getDefaultRebate(model, date = new Date()) {
+  const launchDate = new Date(`${promotion.launchStartsOn}T00:00:00+08:00`);
+  return model === "City Hatchback" && date >= launchDate && isPromotionActive(date)
+    ? 4000
+    : 0;
+}
+
+function updatePromotionNote() {
+  const model = modelSelect.value;
+  const note = document.querySelector("#rebate-note");
+  const reward = promotion.rewards[model];
+  if (!isPromotionActive()) {
+    note.textContent = "Rebate RM0 assumed. Confirm current offers with dealer.";
+  } else if (model === "City Hatchback" && getDefaultRebate(model) > 0) {
+    note.textContent = "RM4,000 launch cash reward. Register by 31 Oct 2026; T&Cs apply.";
+  } else if (reward) {
+    note.textContent = `October rewards up to ${formatRM(reward)}; eligibility applies. Confirm cash rebate with dealer.`;
+  } else {
+    note.textContent = "No verified cash rebate assumed. Confirm with dealer.";
+  }
+}
 
 const colors = {
   "Platinum White Pearl": { swatch: "#f0eee6" },
@@ -113,8 +145,8 @@ const colorAvailability = {
     "1.5L RS": ["Platinum White Pearl", "Meteoroid Gray Metallic", "Stellar Diamond Pearl", "Blazing Red Pearl"],
   },
   "City Hatchback": {
-    default: ["Ignite Red Metallic", "Platinum White Pearl", "Stellar Diamond Pearl", "Meteoroid Gray Metallic"],
-    "1.5L e:HEV RS": ["Ignite Red Metallic", "Platinum White Pearl", "Meteoroid Gray Metallic"],
+    default: ["Blazing Red Pearl", "Platinum White Pearl", "Stellar Diamond Pearl", "Meteoroid Gray Metallic"],
+    "1.5L e:HEV RS": ["Blazing Red Pearl", "Platinum White Pearl", "Meteoroid Gray Metallic"],
   },
   "WR-V": {
     default: ["Platinum White Pearl", "Meteoroid Gray Metallic", "Stellar Diamond Pearl", "Blazing Red Pearl"],
@@ -137,7 +169,7 @@ const colorAvailability = {
 
 const colorSurcharges = {
   "City": { "Platinum White Pearl": 400, "Blazing Red Pearl": 400 },
-  "City Hatchback": { "Platinum White Pearl": 400, "Ignite Red Metallic": 400 },
+  "City Hatchback": { "Platinum White Pearl": 400, "Blazing Red Pearl": 400 },
   "WR-V": {
     "Platinum White Pearl": 400,
     "Blazing Red Pearl": 400,
@@ -255,7 +287,8 @@ function populateColors() {
 function syncVariant() {
   const model = vehicles[modelSelect.value];
   bodyPriceInput.value = model.variants[variantSelect.value].bodyPrice;
-  rebateInput.value = defaultRebate;
+  rebateInput.value = getDefaultRebate(modelSelect.value);
+  updatePromotionNote();
   document.querySelector("#pricing-source").href =
     `https://www.honda.com.my/model/${model.slug}/pricing`;
   populateColors();
@@ -524,7 +557,7 @@ function resetCalculator() {
   syncVariant();
   colorSelect.value = "Platinum White Pearl";
   syncColor();
-  rebateInput.value = defaultRebate;
+  rebateInput.value = getDefaultRebate(modelSelect.value);
   interestRateInput.value = 2.25;
   insuranceOptionSelect.value = "include";
   ncdSelect.value = 0;

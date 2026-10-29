@@ -1,6 +1,6 @@
 # Official Data Snapshot
 
-Verified 2 October 2026 against Honda Malaysia's live public pages. All prices
+Pricing and promotions verified 29 October 2026 against Honda Malaysia's live public pages. All prices
 are for Peninsular Malaysia, private registration, without insurance.
 Sabah, Sarawak, Langkawi, Labuan, company and foreigner registration prices
 are not represented by these presets.
@@ -18,8 +18,6 @@ User edits to body price, colour surcharge and rebate remain supported.
 | City | 1.5L V | 94,560.00 | 94,900.00 |
 | City | 1.5L RS | 99,560.00 | 99,900.00 |
 | City | 1.5L e:HEV RS | 111,560.00 | 111,900.00 |
-| City Hatchback | 1.5L S | 85,560.00 | 85,900.00 |
-| City Hatchback | 1.5L E | 90,560.00 | 90,900.00 |
 | City Hatchback | 1.5L V | 95,560.00 | 95,900.00 |
 | City Hatchback | 1.5L RS | 100,560.00 | 100,900.00 |
 | City Hatchback | 1.5L e:HEV RS | 112,560.00 | 112,900.00 |
@@ -51,24 +49,36 @@ User edits to body price, colour surcharge and rebate remain supported.
 - [e:N1](https://www.honda.com.my/model/en1/pricing)
 - [Prelude](https://www.honda.com.my/model/prelude/pricing)
 
-City Hatchback's individual fee rows currently do not reconcile with its
-published selling/retail totals (number plate is listed as RM150). The app
-uses the published totals, not an invented correction to either price.
+All nine pricing pages were rechecked. The retained selling/retail prices
+are unchanged from the earlier snapshot. City Hatchback S and E are no
+longer listed: the current catalogue has 24 variants across nine models.
+Its number-plate row is now RM50, consistent with the published totals.
 
 ## Rebate Defaults
 
-Default cash rebate is RM0 for every variant, on initial load, variant/model
-changes and reset. It can be edited to a dealer-confirmed amount.
+On load, model/variant changes and reset, City Hatchback defaults to RM4,000
+during the October campaign. Other models default to RM0 because an
+unconditional per-variant cash amount was not published in the sources below.
+All rebates remain editable for dealer-confirmed quotations.
 
-- The [published national promotion](https://www.honda.com.my/happening/)
-  explicitly applies to registrations from 1 to 30 September 2026. Its
-  cash rebates, loyalty rewards, hybrid support, dealer rewards and service
-  vouchers are not assumed to continue into October or combined as cash.
-- The [24 September City launch announcement](https://www.honda.com.my/press-release/view/855/new-city-evolved-for-more-made-for-urban-essential)
-  mentions rewards for the first 2,400 eligible customers without publishing
-  an unconditional cash amount. Dealer confirmation is required.
-- No verified current unconditional October rebate was found at the time
-  of this snapshot. RM0 means no rebate assumed, not that no offer exists.
+- The [19 October launch announcement](https://www.honda.com.my/press-release/view/859/elevated-design-meets-uncompromised-utility-honda-malaysia-launches-the-new-city-hatchback)
+  explicitly offers RM4,000 cash reward for registration of any New City
+  Hatchback variant. Separate HCUC RM2,000 / CARSOME RM1,000 trade-in rewards
+  are conditional and are not added to the default.
+- The [Fun Begins with Honda promotion](https://www.honda.com.my/happening/)
+  applies to registrations from 1 to 31 October 2026. Advertised total rewards:
+  City up to RM7,000; City Hatchback RM4,000; Civic, HR-V and CR-V up to
+  RM20,000 each; WR-V RM8,000. These model-level totals are not assumed to be
+  unconditional cash rebates for every variant.
+- Sales support depends on ownership/family eligibility (and, for City,
+  government service or national-car upgrade); hybrid support applies only to
+  HR-V/CR-V. Fun Rewards depends on participating dealers, Early Bird support
+  is capped, and offers depend on variant, excise year and stock.
+- The app displays the applicable model's reward context and a source link.
+  Default RM4,000 starts on 19 October and ends at midnight after 31 October
+  in Asia/Kuala_Lumpur. Outside the campaign it returns to RM0 on load or
+  model/variant/reset changes. No new promotion is inferred automatically.
+  A user-entered rebate is not overwritten while editing other inputs.
 
 ## Colours And Images
 
@@ -77,8 +87,10 @@ Colour availability comes from the current official brochures linked on
 
 - City: September 2026 brochure, page 19. Stellar Diamond Pearl only for V
   and petrol RS; E and hybrid exclude it. Blazing Red replaces Ignite Red.
-- City Hatchback: July 2026 brochure, page 18. Phoenix Orange is no longer
-  listed; hybrid excludes Stellar Diamond Pearl.
+- City Hatchback: the 19 October launch announcement confirms Blazing Red,
+  Platinum White, Meteoroid Gray and Stellar Diamond (petrol only).
+  Blazing Red replaces Ignite Red; its RM400 surcharge follows the current
+  pricing page. The model image is updated to Honda's October navigation PNG.
 - Civic: May 2026 brochure, page 18. Crystal Black Pearl only for 1.5L V.
 - HR-V: July 2026 brochure, page 18. Phoenix Orange is no longer listed.
 - CR-V: May 2026 brochure, page 18.
